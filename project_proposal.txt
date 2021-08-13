@@ -1,0 +1,45 @@
+## Project Proposal
+
+### Overview
+
+This project will allow for visualization of FEC data of candidates 
+and committees funding their campaigns. The goal of this is to 
+allow users to easily interact with FEC data from the OpenFEC api, 
+to see overall patterns in campaign contributions.
+
+### Technologies required (besides typical Hackbright tech stack)
+
+https://api.open.fec.gov
+
+### Data
+
+candidates -name -id -zip -state -party, 
+committees -candidates -zip -state -party,
+cash_on_hand -candidates -cash -debt
+contributions -candidates -committees -cash_contributed
+
+
+### Roadmap
+
+#### MVP
+
+Allow users to easily find and view campaign contributions by:
+    Candidates,
+    Parties,
+    Election race,
+
+#### 2.0
+
+    Candidates by state,
+    Candidates by party,
+    Contributors,
+
+#### 3.0
+
+    Earnings vs Winners,
+    Biggest Contributors,
+    Biggest Successful Contributors,
+
+### Notes
+
+Replace this with anything else about the project
