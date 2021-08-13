@@ -1,2 +1,4 @@
-secret.sh
+*.sh
 env
+*.DS_STORE
+*.pyc
