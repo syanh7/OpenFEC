@@ -105,6 +105,7 @@ class Cash(db.Model):
     race = db.relationship("Race", backref="cash")
 
 
+
 if __name__ == "__main__":
     from server import app
 

@@ -1,7 +1,7 @@
-import os, json, crud, server 
+import os, json, server 
 from datetime import datetime
 from model import Candidate, Race, Committee, CandidateRace, Contribution, Cash, db, connect_to_db
-from crub import add_candidate, add_race, add_candidate_to_race, add_committee, add_contribution, add_cash
+from crud import add_candidate, add_race, add_candidate_to_race, add_committee, add_contribution, add_cash
 
 
 os.system('dropdb openfec')
