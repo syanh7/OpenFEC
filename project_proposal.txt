@@ -13,11 +13,12 @@ https://api.open.fec.gov
 
 ### Data
 
-candidates -name -id -zip -state -party, 
-committees -candidates -zip -state -party,
+candidates -id -name -zip -state -party, 
+committees -id -state -party,
+committee_contribution -id -committee_id -candidate_id -race_id -date -amount
 cash_on_hand -candidates -cash -debt
-contributions -candidates -committees -cash_contributed
-race -state -date -candidates -race_id -race_name
+candidate_race -candidate_id -race_id
+race -id -state -name -election_date
 
 
 
