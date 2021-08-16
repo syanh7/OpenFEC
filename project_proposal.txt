@@ -17,6 +17,8 @@ candidates -name -id -zip -state -party,
 committees -candidates -zip -state -party,
 cash_on_hand -candidates -cash -debt
 contributions -candidates -committees -cash_contributed
+race -state -date -candidates -race_id -race_name
+
 
 
 ### Roadmap
