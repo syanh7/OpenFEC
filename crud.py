@@ -22,7 +22,7 @@ def add_race(name, state, election_type, election_date, district):
     
     db.session.commit()
 
-    return candidate
+    return race
 
 def add_committee(name, state, party):
     comittee = Committee(name=name,
@@ -45,10 +45,10 @@ def add_candidate_to_race(candidate, race):
 
     return candidate_in_race
 
-def add_contribution(candidate, race, comittee, contribution_date, amount):
+def add_contribution(candidate, race, committee, contribution_date, amount):
     contribution = Contribution(candidate=candidate, 
                                 race=race,
-                                comittee=comittee,
+                                committee=committee,
                                 contribution_date=contribution_date,
                                 amount=amount)
     
@@ -58,11 +58,11 @@ def add_contribution(candidate, race, comittee, contribution_date, amount):
 
     return contribution
 
-def add_cash(candidate, race, cash, debit):
+def add_cash(candidate, race, cash, debt):
     cash_on_hand = Cash(candidate=candidate,
                         race=race,
                         cash=cash,
-                        debit=debit)
+                        debt=debt)
 
     db.session.add(cash_on_hand)
     
@@ -74,3 +74,4 @@ def add_cash(candidate, race, cash, debit):
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
+
