@@ -2,10 +2,21 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
+def connect_to_db(flask_app, db_uri="postgresql:///openfec", echo=True):
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
+    flask_app.config["SQLALCHEMY_ECHO"] = echo
+    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.app = flask_app
+    db.init_app(flask_app)
+
+    print("Connected to the db!")
+
 class Candidate(db.Model):
     '''data model for candidates'''
 
-    ___tablename___ = 'candidates'
+    __tablename__ = 'candidates'
 
     candidate_id = db.Column(db.Integer,
                          primary_key = True,
@@ -18,19 +29,21 @@ class Candidate(db.Model):
 class Race(db.Model):
     '''data model for election race'''
 
-    ___tablename___ = 'races'
+    __tablename__ = 'races'
 
     race_id = db.Column(db.Integer,
                          primary_key = True,
                          autoincrement = True,)
     name = db.Column(db.String(40))
     state = db.Column(db.String(2))
+    election_type = db.Column(db.String(20))
     election_date = db.Column(db.DateTime)
+    district = db.Column(db.Integer)
 
 class Committee(db.Model):
     '''data model for committees'''
 
-    ___tablename___ = 'committees'
+    __tablename__ = 'committees'
 
     committee_id = db.Column(db.Integer,
                          primary_key = True,
@@ -42,13 +55,13 @@ class Committee(db.Model):
 class CandidateRace(db.Model):
     '''bridge table between races and candidates table'''
 
-    ___tablename___ = 'candidate_race'
+    __tablename__ = 'candidate_race'
 
     candidate_id = db.Column(db.Integer, 
-                             db.ForeignKey("candidates.candidate_id"), 
+                             db.ForeignKey("candidates.candidate_id"),
                              primary_key=True)
     race_id = db.Column(db.Integer, 
-                        db.ForeignKey("races.race_id"), 
+                        db.ForeignKey("races.race_id"),
                         primary_key=True)
     
     candidate = db.relationship("Candidate", backref="candidate_race")
@@ -57,7 +70,7 @@ class CandidateRace(db.Model):
 class Contribution(db.Model):
     '''data model for campaign contributions'''
 
-    ___tablename___ = 'contributions'
+    __tablename__ = 'contributions'
 
     contribution_id = db.Column(db.Integer,
                          primary_key = True,
@@ -70,14 +83,14 @@ class Contribution(db.Model):
     amount = db.Column(db.Integer)
 
     candidate = db.relationship("Candidate", backref="contribution")
-    race = db.relationship("Candidate", backref="contribution")
-    committee = db.relationship("Candidate", backref="contribution")
+    race = db.relationship("Race", backref="contribution")
+    committee = db.relationship("Committee", backref="contribution")
 
 
 class Cash(db.Model):
     '''data model for cash of candidate'''
 
-    ___tablename___ = 'cash_on_hand'
+    __tablename__ = 'cash_on_hand'
 
     account_id = db.Column(db.Integer,
                          primary_key = True,
@@ -89,12 +102,15 @@ class Cash(db.Model):
     debt = db.Column(db.Integer)
 
     candidate = db.relationship("Candidate", backref="cash")
-    race = db.relationship("Candidate", backref="cash")
+    race = db.relationship("Race", backref="cash")
 
 
+if __name__ == "__main__":
+    from server import app
 
+    # Call connect_to_db(app, echo=False) if your program output gets
+    # too annoying; this will tell SQLAlchemy not to print out every
+    # query it executes.
 
-
-
-
+    connect_to_db(app)
 

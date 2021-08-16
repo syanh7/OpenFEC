@@ -29,7 +29,7 @@ race -id -state -name -election_date
 Allow users to easily find and view campaign contributions by:
     Candidates,
     Parties,
-    Election race,
+    Election race,s
 
 #### 2.0
 
