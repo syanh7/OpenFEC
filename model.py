@@ -18,13 +18,15 @@ class Candidate(db.Model):
 
     __tablename__ = 'candidates'
 
-    candidate_id = db.Column(db.Integer,
-                         primary_key = True,
-                         autoincrement = True,)
-    name = db.Column(db.String(40))
-    zipcode = db.Column(db.Integer)
+    candidate_id = db.Column(db.String,
+                         primary_key = True,)
+    name = db.Column(db.String(80))
     state = db.Column(db.String(2))
     party = db.Column(db.String(20))
+    office = db.Column(db.String(1))
+    district = db.Column(db.String(2))
+    latest_cycle = db.Column(db.Integer)
+    incumbent = db.Column(db.String(1))
 
 class Race(db.Model):
     '''data model for election race'''
@@ -34,10 +36,9 @@ class Race(db.Model):
     race_id = db.Column(db.Integer,
                          primary_key = True,
                          autoincrement = True,)
-    name = db.Column(db.String(40))
     state = db.Column(db.String(2))
-    election_type = db.Column(db.String(20))
-    election_date = db.Column(db.DateTime)
+    office = db.Column(db.String(20))
+    election_year = db.Column(db.Integer)
     district = db.Column(db.Integer)
 
 class Committee(db.Model):
@@ -57,7 +58,7 @@ class CandidateRace(db.Model):
 
     __tablename__ = 'candidate_race'
 
-    candidate_id = db.Column(db.Integer, 
+    candidate_id = db.Column(db.String, 
                              db.ForeignKey("candidates.candidate_id"),
                              primary_key=True)
     race_id = db.Column(db.Integer, 
@@ -76,7 +77,7 @@ class Contribution(db.Model):
                          primary_key = True,
                          autoincrement = True,)
 
-    candidate_id = db.Column(db.Integer, db.ForeignKey("candidates.candidate_id"))
+    candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
     race_id = db.Column(db.Integer, db.ForeignKey("races.race_id"))
     committee_id = db.Column(db.Integer, db.ForeignKey("committees.committee_id"))
     contribution_date = db.Column(db.DateTime)
@@ -96,7 +97,7 @@ class Cash(db.Model):
                          primary_key = True,
                          autoincrement = True,)
     
-    candidate_id = db.Column(db.Integer, db.ForeignKey("candidates.candidate_id"))
+    candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
     race_id = db.Column(db.Integer, db.ForeignKey("races.race_id"))
     cash = db.Column(db.Integer)
     debt = db.Column(db.Integer)
