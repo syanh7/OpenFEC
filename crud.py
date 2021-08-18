@@ -1,6 +1,21 @@
 
 from model import db, Candidate, Race, Committee, CandidateRace, Contribution, Cash, connect_to_db
 
+def mass_add_candidate(candidate_id, name, state, 
+                 party, office, district,
+                 latest_cycle, incumbent):
+    candidate = Candidate(candidate_id=candidate_id,
+                          name = name, 
+                          state=state, 
+                          party=party,
+                          office=office,
+                          district=district,
+                          latest_cycle=latest_cycle,
+                          incumbent=incumbent)
+                          
+    db.session.add(candidate)
+
+
 def add_candidate(candidate_id, name, state, 
                  party, office, district,
                  latest_cycle, incumbent):
