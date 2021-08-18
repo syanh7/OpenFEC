@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-def connect_to_db(flask_app, db_uri="postgresql:///openfec", echo=True):
+def connect_to_db(flask_app, db_uri="postgresql:///samplefec", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -25,7 +25,6 @@ class Candidate(db.Model):
     party = db.Column(db.String(20))
     office = db.Column(db.String(1))
     district = db.Column(db.String(2))
-    latest_cycle = db.Column(db.Integer)
     incumbent = db.Column(db.String(1))
 
 class Race(db.Model):
@@ -33,25 +32,27 @@ class Race(db.Model):
 
     __tablename__ = 'races'
 
-    race_id = db.Column(db.Integer,
+    race_id = db.Column(db.String,
                          primary_key = True,
-                         autoincrement = True,)
+)
     state = db.Column(db.String(2))
     office = db.Column(db.String(20))
-    election_year = db.Column(db.Integer)
-    district = db.Column(db.Integer)
+    cycle = db.Column(db.Integer)
+    district = db.Column(db.String(2))
 
 class Committee(db.Model):
     '''data model for committees'''
 
     __tablename__ = 'committees'
 
-    committee_id = db.Column(db.Integer,
+    committee_id = db.Column(db.String,
                          primary_key = True,
-                         autoincrement = True,)
+)
     name = db.Column(db.String(40))
     state = db.Column(db.String(2))
     party = db.Column(db.String(20))
+    committee_type = db.Column(db.String(1))
+    designation = db.Column(db.String(1))
 
 class CandidateRace(db.Model):
     '''bridge table between races and candidates table'''
@@ -61,7 +62,7 @@ class CandidateRace(db.Model):
     candidate_id = db.Column(db.String, 
                              db.ForeignKey("candidates.candidate_id"),
                              primary_key=True)
-    race_id = db.Column(db.Integer, 
+    race_id = db.Column(db.String, 
                         db.ForeignKey("races.race_id"),
                         primary_key=True)
     
@@ -73,13 +74,13 @@ class Contribution(db.Model):
 
     __tablename__ = 'contributions'
 
-    contribution_id = db.Column(db.Integer,
+    contribution_id = db.Column(db.String,
                          primary_key = True,
-                         autoincrement = True,)
+)
 
     candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
-    race_id = db.Column(db.Integer, db.ForeignKey("races.race_id"))
-    committee_id = db.Column(db.Integer, db.ForeignKey("committees.committee_id"))
+    race_id = db.Column(db.String, db.ForeignKey("races.race_id"))
+    committee_id = db.Column(db.String, db.ForeignKey("committees.committee_id"))
     contribution_date = db.Column(db.DateTime)
     amount = db.Column(db.Integer)
 
@@ -98,7 +99,7 @@ class Cash(db.Model):
                          autoincrement = True,)
     
     candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
-    race_id = db.Column(db.Integer, db.ForeignKey("races.race_id"))
+    race_id = db.Column(db.String, db.ForeignKey("races.race_id"))
     cash = db.Column(db.Integer)
     debt = db.Column(db.Integer)
 

@@ -2,30 +2,26 @@
 from model import db, Candidate, Race, Committee, CandidateRace, Contribution, Cash, connect_to_db
 
 def mass_add_candidate(candidate_id, name, state, 
-                 party, office, district,
-                 latest_cycle, incumbent):
+                 party, office, district, incumbent):
     candidate = Candidate(candidate_id=candidate_id,
                           name = name, 
                           state=state, 
                           party=party,
                           office=office,
                           district=district,
-                          latest_cycle=latest_cycle,
                           incumbent=incumbent)
                           
     db.session.add(candidate)
-
+    
 
 def add_candidate(candidate_id, name, state, 
-                 party, office, district,
-                 latest_cycle, incumbent):
+                 party, office, district, incumbent):
     candidate = Candidate(candidate_id=candidate_id,
                           name = name, 
                           state=state, 
                           party=party,
                           office=office,
                           district=district,
-                          latest_cycle=latest_cycle,
                           incumbent=incumbent)
     db.session.add(candidate)
     
@@ -33,26 +29,12 @@ def add_candidate(candidate_id, name, state,
 
     return candidate
 
-def mass_add_candidate(candidate_id, name, state, 
-                 party, office, district,
-                 latest_cycle, incumbent):
-    candidate = Candidate(candidate_id=candidate_id,
-                          name = name, 
-                          state=state, 
-                          party=party,
-                          office=office,
-                          district=district,
-                          latest_cycle=latest_cycle,
-                          incumbent=incumbent)
-                          
-    db.session.add(candidate)
 
-
-def add_race(name, state, election_type, election_date, district):
-    race = Race(name = name, 
+def add_race(race_id, state, office, cycle, district):
+    race = Race(race_id=race_id,
             state = state, 
-            election_type=election_type, 
-            election_date=election_date,
+            office=office, 
+            cycle=cycle,
             district=district)
     db.session.add(race)
     
