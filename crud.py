@@ -28,7 +28,6 @@ def add_candidate(candidate_id, name, state,
     db.session.commit()
 
     return candidate
-    
 
 
 def add_race(race_id, state, office, cycle, district):
@@ -96,6 +95,9 @@ def add_cash(candidate, race, cash, debt):
 
 def get_candidate(candidate_id):
     return Candidate.query.get(candidate_id)
+
+def get_race(race_id):
+    return Race.query.get(race_id)
 
 
 #returns all candidates, default is president

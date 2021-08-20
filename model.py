@@ -72,7 +72,7 @@ class Committee(db.Model):
 
     def as_dict(self):
         return {'committee_id':self.committee_id,
-                'name':self.name,s
+                'name':self.name,
                 'state':self.state,
                 'party':self.party,
                 'committee_type':self.committee_type,
