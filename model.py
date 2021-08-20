@@ -71,14 +71,29 @@ class Committee(db.Model):
     designation = db.Column(db.String(1))
 
     def as_dict(self):
-        return {'name':self.name,
+        return {'committee_id':self.committee_id,
+                'name':self.name,s
                 'state':self.state,
                 'party':self.party,
                 'committee_type':self.committee_type,
                 'designation':self.designation}
+
+class CandidateCommittee(db.Model):
+    '''bridge table between candidates and committee table'''
+
+    __tablename__ = 'candidate_committee'
+
+    candidate_id = db.Column(db.String, 
+                             db.ForeignKey("candidates.candidate_id"),
+                             primary_key=True)
+    committee_id = db.Column(db.String, 
+                        db.ForeignKey("committees.committee_id"),
+                        primary_key=True)
+    
+    candidate = db.relationship("Candidate", backref="candidate_committee")
+    committee = db.relationship("Committee", backref="candidate_committee")
                 
     
-
 class CandidateRace(db.Model):
     '''bridge table between races and candidates table'''
 
@@ -94,15 +109,14 @@ class CandidateRace(db.Model):
     candidate = db.relationship("Candidate", backref="candidate_race")
     race = db.relationship("Race", backref="candidate_race")
 
+
 class Contribution(db.Model):
     '''data model for campaign contributions'''
 
     __tablename__ = 'contributions'
 
     contribution_id = db.Column(db.String,
-                         primary_key = True,
-)
-
+                         primary_key = True,)
     candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
     race_id = db.Column(db.String, db.ForeignKey("races.race_id"))
     committee_id = db.Column(db.String, db.ForeignKey("committees.committee_id"))

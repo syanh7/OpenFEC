@@ -67,7 +67,7 @@ def all_district(state):
 def house_election(state, district):
     ''' Return House Candidates by State/District'''
 
-    candidates = crud.get_candidates(state, office, district)
+    candidates = crud.get_candidates(state, 'H', district)
 
     return jsonify([candidate.as_dict() for candidate in candidates])
 
@@ -75,10 +75,9 @@ def house_election(state, district):
 @app.route('/candidate/<candidate_id>')
 def candidate_info(candidate_id):
 
-    candidate = crud.get_candidate()
+    candidate = crud.get_candidate(candidate_id)
 
     return jsonify(candidate.as_dict())
-
 
 
 if __name__ == '__main__':
