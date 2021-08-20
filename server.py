@@ -37,7 +37,7 @@ def all_senate():
     return jsonify([race.as_dict() for race in races])
 
 
-@app.route('/sentate/<state>')
+@app.route('/senate/<state>')
 def senate_by_state(state):
     ''' Return Sentate Candidates in a state '''
     candidates = crud.get_candidates(state, 'S')

@@ -62,9 +62,9 @@ class Committee(db.Model):
     __tablename__ = 'committees'
 
     committee_id = db.Column(db.String,
-                         primary_key = True,
-)
-    name = db.Column(db.String(40))
+                         primary_key = True,)
+    candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
+    name = db.Column(db.String(200))
     state = db.Column(db.String(2))
     party = db.Column(db.String(20))
     committee_type = db.Column(db.String(1))
@@ -78,20 +78,7 @@ class Committee(db.Model):
                 'committee_type':self.committee_type,
                 'designation':self.designation}
 
-class CandidateCommittee(db.Model):
-    '''bridge table between candidates and committee table'''
-
-    __tablename__ = 'candidate_committee'
-
-    candidate_id = db.Column(db.String, 
-                             db.ForeignKey("candidates.candidate_id"),
-                             primary_key=True)
-    committee_id = db.Column(db.String, 
-                        db.ForeignKey("committees.committee_id"),
-                        primary_key=True)
-    
-    candidate = db.relationship("Candidate", backref="candidate_committee")
-    committee = db.relationship("Committee", backref="candidate_committee")
+    candidate = db.relationship("Candidate", backref="committee")
                 
     
 class CandidateRace(db.Model):

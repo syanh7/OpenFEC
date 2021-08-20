@@ -1,9 +1,8 @@
 import os, json, server, requests
 from datetime import datetime
 from model import connect_to_db, db
-from crud import mass_add_candidate, mass_commit, add_candidate, 
-                 add_race, add_candidate_to_race, add_committee, 
-                 add_contribution, add_cash, get_candidate
+from crud import mass_add_candidate, mass_commit, 
+                 add_race, add_candidate_to_race, get_candidate, get_race
 
 
 # #create db
@@ -126,7 +125,6 @@ for page in range(2, pages+1):
                 #create a link between race and candidate in association table
                 add_candidate_to_race(candidate, race)
     print(f'{page} race complete')
-    mass_commit()
 
 
 # C00492421 --pelosi committee ID

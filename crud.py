@@ -1,6 +1,10 @@
 
 from model import db, Candidate, Race, Committee, CandidateRace, Contribution, Cash, connect_to_db
 
+
+#for mass addition to db, don't have to wait for
+#each session to commit before adding next
+#record
 def mass_add_candidate(candidate_id, name, state, 
                  party, office, district, incumbent):
     candidate = Candidate(candidate_id=candidate_id,
@@ -13,7 +17,7 @@ def mass_add_candidate(candidate_id, name, state,
                           
     db.session.add(candidate)
     
-
+#create, add and commit each record of a candidate
 def add_candidate(candidate_id, name, state, 
                  party, office, district, incumbent):
     candidate = Candidate(candidate_id=candidate_id,
@@ -29,7 +33,7 @@ def add_candidate(candidate_id, name, state,
 
     return candidate
 
-
+#create, add and commit each record of a race
 def add_race(race_id, state, office, cycle, district):
     race = Race(race_id=race_id,
             state = state, 
@@ -42,11 +46,15 @@ def add_race(race_id, state, office, cycle, district):
 
     return race
 
-
-def add_committee(name, state, party):
-    comittee = Committee(name=name,
+#create, add and commit each record of a committee
+def add_committee(committee_id, name, state, party, committee_type, designation, candidate):
+    comittee = Committee(committee_id=committee_id,
+                        name=name,
                          state=state,
-                         party=party)
+                         party=party,
+                         committee_type=committee_type,
+                         designation=designation,
+                         candidate=candidate)
     
     db.session.add(comittee)
 
@@ -54,18 +62,7 @@ def add_committee(name, state, party):
     
     return comittee
 
-
-def add_candidate_to_race(candidate, race):
-    candidate_in_race = CandidateRace(candidate=candidate,
-                                      race=race)
-    
-    db.session.add(candidate_in_race)
-
-    db.session.commit()
-
-    return candidate_in_race
-
-
+#create, add and commit each record of a contribution
 def add_contribution(candidate, race, committee, contribution_date, amount):
     contribution = Contribution(candidate=candidate, 
                                 race=race,
@@ -79,7 +76,7 @@ def add_contribution(candidate, race, committee, contribution_date, amount):
 
     return contribution
 
-
+#create, add and commit each record of cash amount
 def add_cash(candidate, race, cash, debt):
     cash_on_hand = Cash(candidate=candidate,
                         race=race,
@@ -92,10 +89,23 @@ def add_cash(candidate, race, cash, debt):
 
     return cash_on_hand
 
+#define the relationship between a candidate and a race
+def add_candidate_to_race(candidate, race):
+    candidate_in_race = CandidateRace(candidate=candidate,
+                                      race=race)
+    
+    db.session.add(candidate_in_race)
 
+    db.session.commit()
+
+    return candidate_in_race
+
+
+#get a single record of a candidate by id
 def get_candidate(candidate_id):
     return Candidate.query.get(candidate_id)
 
+#get a single record of a race by id
 def get_race(race_id):
     return Race.query.get(race_id)
 
