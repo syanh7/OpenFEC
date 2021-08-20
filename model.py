@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
+
 db = SQLAlchemy()
 
 
@@ -27,18 +28,33 @@ class Candidate(db.Model):
     district = db.Column(db.String(2))
     incumbent = db.Column(db.String(1))
 
+    def as_dict(self):
+        return {'candidate_id':self.candidate_id,
+                'name':self.name,
+                'state':self.state,
+                'party':self.party,
+                'district':self.district,
+                'incumbent':self.incumbent}
+
+
 class Race(db.Model):
     '''data model for election race'''
 
     __tablename__ = 'races'
 
     race_id = db.Column(db.String,
-                         primary_key = True,
-)
+                         primary_key = True,)
     state = db.Column(db.String(2))
     office = db.Column(db.String(20))
     cycle = db.Column(db.Integer)
     district = db.Column(db.String(2))
+
+    def as_dict(self):
+        return {'state':self.state,
+                'office':self.office,
+                'cycle':self.cycle,
+                'district':self.district}
+
 
 class Committee(db.Model):
     '''data model for committees'''
@@ -53,6 +69,15 @@ class Committee(db.Model):
     party = db.Column(db.String(20))
     committee_type = db.Column(db.String(1))
     designation = db.Column(db.String(1))
+
+    def as_dict(self):
+        return {'name':self.name,
+                'state':self.state,
+                'party':self.party,
+                'committee_type':self.committee_type,
+                'designation':self.designation}
+                
+    
 
 class CandidateRace(db.Model):
     '''bridge table between races and candidates table'''
@@ -110,6 +135,7 @@ class Cash(db.Model):
 
 if __name__ == "__main__":
     from server import app
+
 
     # Call connect_to_db(app, echo=False) if your program output gets
     # too annoying; this will tell SQLAlchemy not to print out every
