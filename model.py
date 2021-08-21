@@ -64,21 +64,24 @@ class Committee(db.Model):
     committee_id = db.Column(db.String,
                          primary_key = True,)
     candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
-    name = db.Column(db.String(200))
+    name = db.Column(db.Text)
     state = db.Column(db.String(2))
     party = db.Column(db.String(20))
     committee_type = db.Column(db.String(1))
     designation = db.Column(db.String(1))
 
+    candidate = db.relationship("Candidate", backref="committee")
+
+
     def as_dict(self):
         return {'committee_id':self.committee_id,
+                'candidate_id':self.candidate_id,
                 'name':self.name,
                 'state':self.state,
                 'party':self.party,
                 'committee_type':self.committee_type,
                 'designation':self.designation}
 
-    candidate = db.relationship("Candidate", backref="committee")
                 
     
 class CandidateRace(db.Model):
@@ -102,13 +105,15 @@ class Contribution(db.Model):
 
     __tablename__ = 'contributions'
 
-    contribution_id = db.Column(db.String,
-                         primary_key = True,)
+    contribution_id = db.Column(db.Integer,
+                         primary_key = True,
+                         autoincrement = True)
     candidate_id = db.Column(db.String, db.ForeignKey("candidates.candidate_id"))
     race_id = db.Column(db.String, db.ForeignKey("races.race_id"))
     committee_id = db.Column(db.String, db.ForeignKey("committees.committee_id"))
     contribution_date = db.Column(db.DateTime)
     amount = db.Column(db.Integer)
+    transaction_id = db.Column(db.String)
 
     candidate = db.relationship("Candidate", backref="contribution")
     race = db.relationship("Race", backref="contribution")

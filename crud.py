@@ -46,7 +46,7 @@ def add_race(race_id, state, office, cycle, district):
 
     return race
 
-#create, add and commit each record of a committee
+#create, add and commit each record of a committee with a linked candidate
 def add_committee(committee_id, name, state, party, committee_type, designation, candidate):
     comittee = Committee(committee_id=committee_id,
                         name=name,
@@ -62,13 +62,29 @@ def add_committee(committee_id, name, state, party, committee_type, designation,
     
     return comittee
 
+#create, add and commit each record of a committee without a candidate
+def add_committee_no_candidate(committee_id, name, state, party, committee_type, designation):
+    comittee = Committee(committee_id=committee_id,
+                        name=name,
+                         state=state,
+                         party=party,
+                         committee_type=committee_type,
+                         designation=designation)
+    
+    db.session.add(comittee)
+
+    db.session.commit()
+    
+    return comittee
+
 #create, add and commit each record of a contribution
-def add_contribution(candidate, race, committee, contribution_date, amount):
-    contribution = Contribution(candidate=candidate, 
-                                race=race,
-                                committee=committee,
+def add_contribution(candidate, race, committee, transaction_id, contribution_date, amount):
+    contribution = Contribution(transaction_id=transaction_id,
                                 contribution_date=contribution_date,
-                                amount=amount)
+                                amount=amount,
+                                candidate=candidate, 
+                                race=race,
+                                committee=committee)
     
     db.session.add(contribution)
 
@@ -105,9 +121,20 @@ def add_candidate_to_race(candidate, race):
 def get_candidate(candidate_id):
     return Candidate.query.get(candidate_id)
 
+
 #get a single record of a race by id
 def get_race(race_id):
     return Race.query.get(race_id)
+
+
+#get a single record of a committee by id
+def get_committee(committee_id):
+    return Committee.query.get(committee_id)
+
+
+def get_candidate_race(candidate, cycle = 2022):
+    return Race.query.join(CandidateRace).join(Candidate).filter((Candidate.candidate_id == candidate.candidate_id)
+                                                                & (Race.cycle == cycle)).first()
 
 
 #returns all candidates, default is president
@@ -125,9 +152,9 @@ def all_races(office, cycle=2022):
 
 
 #returns all races with office, state, and year (distinct district)
-def races_in_state(office, state, year=2022):
+def races_in_state(office, state, cycle=2022):
     return Race.query.filter((Race.office == office) 
-                           & (Race.cycle == year)
+                           & (Race.cycle == cycle)
                            & (Race.state == state)).distinct(Race.district)
 
 

@@ -25,7 +25,7 @@ def presidential_election():
     ''' Return presidential Candidates '''
     candidates = crud.get_candidates()
 
-    return jsonify([candidate.as_dict() for candidate in candidates])
+    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
 @app.route('/senate')
@@ -34,7 +34,7 @@ def all_senate():
 
     races = crud.all_races('S')
 
-    return jsonify([race.as_dict() for race in races])
+    return jsonify([race.state for race in races])
 
 
 @app.route('/senate/<state>')
@@ -42,7 +42,7 @@ def senate_by_state(state):
     ''' Return Sentate Candidates in a state '''
     candidates = crud.get_candidates(state, 'S')
 
-    return jsonify([candidate.as_dict() for candidate in candidates])
+    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
 @app.route('/house')
@@ -51,7 +51,7 @@ def all_house():
 
     races = crud.all_races('H')
 
-    return jsonify([race.as_dict() for race in races if race.district != '00'])
+    return jsonify([race.state for race in races if race.district != '00'])
 
 
 @app.route('/house/<state>')
@@ -60,7 +60,7 @@ def all_district(state):
 
     races = crud.races_in_state('H', state)
 
-    return jsonify([race.as_dict() for race in races if race.district != '00'])
+    return jsonify([race.district for race in races if race.district != '00'])
 
 
 @app.route('/house/<state>/<district>')
@@ -69,7 +69,7 @@ def house_election(state, district):
 
     candidates = crud.get_candidates(state, 'H', district)
 
-    return jsonify([candidate.as_dict() for candidate in candidates])
+    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
 @app.route('/candidate/<candidate_id>')
