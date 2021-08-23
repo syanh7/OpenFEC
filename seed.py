@@ -81,14 +81,18 @@ for line in file:
 
 #---------populate contributions from individuals--------------
 ##only shows information from individuals who donate to a committee directly linked to a candidate
-last_committee = None
-committee = get_committee(data_list[0][0])
+last_committee_id = data_list[0][0]
+committee = get_committee(last_committee_id)
 candidate = committee.candidate
 
 for ele in data_list:
+    if ele[0] != last_committee_id:
+        committee = get_committee(ele[0])
+        candidate = committee.candidate
+        last_committee_id = ele[0]
     #if several of the same committee contributions are in a row
     #we can just skip over it and not waste time doing lookup 
-    if committee == last_committee and candidate is None:
+    if ele[0] == last_committee_id and candidate is None:
         continue 
     #if candidate or committee information is not in db
     #skip over the record
@@ -107,13 +111,10 @@ for ele in data_list:
         transaction_id = ele[16]
         amount = ele[14]
         individual = True
-        last_committee = committee
+        last_committee_id = ele[0]
         #add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual)
         print(ele[0], candidate.name)
 
-    if committee != last_committee:
-        committee = get_committee(ele[0])
-        candidate = committee.candidate
 
 
 
