@@ -52,7 +52,7 @@ for line in file:
 #                         committee_designation,
 #                         candidate)
 
-# #---------populate contributions from pacs/orgs--------------
+#---------populate contributions from pacs/orgs--------------
 
 
 # for ele in data_list:
@@ -75,8 +75,9 @@ for line in file:
 #         amount = ele[14]
 #         #contribution is from a pac/org
 #         individual = False
+#         state = ele[9]
 
-#         add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual)
+#         add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual, state)
 
 
 #---------populate contributions from individuals--------------
@@ -86,6 +87,7 @@ committee = get_committee(last_committee_id)
 candidate = committee.candidate
 
 for ele in data_list:
+    #only do lookup if new committee id
     if ele[0] != last_committee_id:
         committee = get_committee(ele[0])
         candidate = committee.candidate
@@ -111,9 +113,11 @@ for ele in data_list:
         transaction_id = ele[16]
         amount = ele[14]
         individual = True
+        state = ele[9]
+
         last_committee_id = ele[0]
-        #add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual)
-        print(ele[0], candidate.name)
+
+        add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual, state)
 
 
 

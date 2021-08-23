@@ -78,11 +78,12 @@ def add_committee_no_candidate(committee_id, name, state, party, committee_type,
     return comittee
 
 #create, add and commit each record of a contribution
-def add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual):
+def add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual, state):
     contribution = Contribution(transaction_id=transaction_id,
                                 contribution_date=contribution_date,
                                 amount=amount,
                                 individual=individual,
+                                state=state,
                                 candidate=candidate, 
                                 race=race,
                                 committee=committee)
