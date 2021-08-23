@@ -78,10 +78,11 @@ def add_committee_no_candidate(committee_id, name, state, party, committee_type,
     return comittee
 
 #create, add and commit each record of a contribution
-def add_contribution(candidate, race, committee, transaction_id, contribution_date, amount):
+def add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual):
     contribution = Contribution(transaction_id=transaction_id,
                                 contribution_date=contribution_date,
                                 amount=amount,
+                                individual=individual,
                                 candidate=candidate, 
                                 race=race,
                                 committee=committee)
@@ -132,6 +133,7 @@ def get_committee(committee_id):
     return Committee.query.get(committee_id)
 
 
+#returns a single race
 def get_candidate_race(candidate, cycle = 2022):
     return Race.query.join(CandidateRace).join(Candidate).filter((Candidate.candidate_id == candidate.candidate_id)
                                                                 & (Race.cycle == cycle)).first()
@@ -142,20 +144,26 @@ def get_candidates(state='US', office='P', district='00', cycle = 2022):
     return Candidate.query.join(CandidateRace).join(Race).filter((Race.state == state) 
                                                                & (Race.cycle == cycle) 
                                                                & (Race.office == office)
-                                                               & (Race.district == district))
+                                                               & (Race.district == district)).all()
 
 
 #returns all races with office and year
 def all_races(office, cycle=2022):
     return Race.query.filter((Race.office == office) 
-                           & (Race.cycle == cycle)).distinct(Race.state)
+                           & (Race.cycle == cycle)).distinct(Race.state).all()
 
 
 #returns all races with office, state, and year (distinct district)
 def races_in_state(office, state, cycle=2022):
     return Race.query.filter((Race.office == office) 
                            & (Race.cycle == cycle)
-                           & (Race.state == state)).distinct(Race.district)
+                           & (Race.state == state)).distinct(Race.district).all()
+
+
+#returns all contributions by candidate
+def get_contributions_by_candidate(candidate):
+    return Contribution.query.join(Candidate).filter((Candidate.candidate_id == candidate.candidate_id)).all()
+
 
 
 def mass_commit():

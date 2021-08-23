@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 def connect_to_db(flask_app, db_uri="postgresql:///samplefec", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
-    flask_app.config["SQLALCHEMY_ECHO"] = echo
+    #flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.app = flask_app
@@ -114,10 +114,19 @@ class Contribution(db.Model):
     contribution_date = db.Column(db.DateTime)
     amount = db.Column(db.Integer)
     transaction_id = db.Column(db.String)
+    individual = db.Column(db.String)
 
-    candidate = db.relationship("Candidate", backref="contribution")
-    race = db.relationship("Race", backref="contribution")
-    committee = db.relationship("Committee", backref="contribution")
+    candidate = db.relationship("Candidate", backref="contributions")
+    race = db.relationship("Race", backref="contributions")
+    committee = db.relationship("Committee", backref="contributions")
+
+    def as_dict(self):
+        return {'candidate_id':self.candidate_id,
+                'race_id':self.race_id,
+                'committee_id':self.committee_id,
+                'contribution_date':self.contribution_date,
+                'amount':self.amount,
+                'transaction_id':self.transaction_id}
 
 
 class Cash(db.Model):

@@ -52,32 +52,74 @@ for line in file:
 #                         committee_designation,
 #                         candidate)
 
-#---------populate contributions--------------
-not_in_db = []
+# #---------populate contributions from pacs/orgs--------------
 
+
+# for ele in data_list:
+#     #get the record of committee and candidate by id
+#     #positions is found on Contributions from committees to candidates
+#     #pas2_header_file header on open.fec.gov documentation
+#     committee = get_committee(ele[0])
+#     candidate = get_candidate(ele[16])
+#     #if candidate or committee information is not in db
+#     #skip over the record
+#     if committee is not None and candidate is not None:
+#         #get the race the candidate is in
+#         race = get_candidate_race(candidate)
+#         #calculate date
+#         if len(ele[13]) == 8:
+#             contribution_date = ele[13][:2] +'/'+ ele[13][2:4] +'/'+ ele[13][4:]
+#         else:
+#             contribution_date = None
+#         transaction_id = ele[17]
+#         amount = ele[14]
+#         #contribution is from a pac/org
+#         individual = False
+
+#         add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual)
+
+
+#---------populate contributions from individuals--------------
+##only shows information from individuals who donate to a committee directly linked to a candidate
+last_committee = None
+committee = get_committee(data_list[0][0])
+candidate = committee.candidate
 
 for ele in data_list:
+    #if several of the same committee contributions are in a row
+    #we can just skip over it and not waste time doing lookup 
+    if committee == last_committee and candidate is None:
+        continue 
+    #if candidate or committee information is not in db
+    #skip over the record
     #get the record of committee and candidate by id
     #positions is found on Contributions from committees to candidates
     #pas2_header_file header on open.fec.gov documentation
-    committee = get_committee(ele[0])
-    candidate = get_candidate(ele[16])
-    #if candidate or committee information is not in db
-    #skip over the record
+
     if committee is not None and candidate is not None:
         #get the race the candidate is in
         race = get_candidate_race(candidate)
+        #calculate date
         if len(ele[13]) == 8:
             contribution_date = ele[13][:2] +'/'+ ele[13][2:4] +'/'+ ele[13][4:]
         else:
             contribution_date = None
-        transaction_id = ele[17]
+        transaction_id = ele[16]
         amount = ele[14]
+        individual = True
+        last_committee = committee
+        #add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual)
+        print(ele[0], candidate.name)
 
-        add_contribution(candidate, race, committee, transaction_id, contribution_date, amount)
+    if committee != last_committee:
+        committee = get_committee(ele[0])
+        candidate = committee.candidate
 
 
-        
+
+
+
+
 
 
 
