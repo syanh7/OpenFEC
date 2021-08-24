@@ -20,7 +20,7 @@ for line in file:
     data_list.append(line.strip('\n').split('|'))
 
 
-# #--------populate committees------------'cm2022.txt'
+#--------populate committees------------'cm2022.txt'
 
 # for ele in data_list:
 #     #get the candidate id from the list
@@ -52,7 +52,7 @@ for line in file:
 #                         committee_designation,
 #                         candidate)
 
-#---------populate contributions from pacs/orgs--------------
+# ---------populate contributions from pacs/orgs--------------
 
 
 # for ele in data_list:
@@ -84,13 +84,19 @@ for line in file:
 ##only shows information from individuals who donate to a committee directly linked to a candidate
 last_committee_id = data_list[0][0]
 committee = get_committee(last_committee_id)
-candidate = committee.candidate
+if committee is None:
+    candidate = None
+else:
+    candidate = committee.candidate
 
 for ele in data_list:
     #only do lookup if new committee id
     if ele[0] != last_committee_id:
         committee = get_committee(ele[0])
-        candidate = committee.candidate
+        if committee is None:
+            candidate = None
+        else:
+            candidate = committee.candidate
         last_committee_id = ele[0]
     #if several of the same committee contributions are in a row
     #we can just skip over it and not waste time doing lookup 
@@ -118,13 +124,3 @@ for ele in data_list:
         last_committee_id = ele[0]
 
         add_contribution(candidate, race, committee, transaction_id, contribution_date, amount, individual, state)
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>Open FEC</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "/static/css/style.css">
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  </head>
+  </head>
+  <body>
+
+    <section id = "select-race">
+        <h3 id= "race-title">Select Election Race (2022 Cycle)</h3>
+
+        <button id='president-race' value = 'president'>President</button>
+        <button id='senate-race' value = 'senate'>Senate</button>
+        <button id='house-race' value = 'house'>House</button>
+
+    </section>
+
+    <section id = "select-state-senate" >
+        <h3 id = 'state-title-senate'></h3>
+        <form id = "get-state-senate">
+            <select id = "state-id-senate">
+            </select>
+            <input type="submit">
+        </form>
+    </section>
+
+    <section id = "select-state-house" >
+        <h3 id = 'state-title-house'></h3>
+        <form id = "get-state-house">
+            <select id = "state-id-house">
+            </select>
+            <input type="submit">
+        </form>
+    </section>
+
+    <section id = "select-district">
+        <h3 id = 'district-title'></h3>
+        <form id = "get-district">
+            <select id = "district-id">
+            </select>
+            <input type="submit">
+        </form>
+    </section>
+
+
+    <section id = "display-candidates">
+        <ul id = 'candidate-list'>
+        </ul>
+    </section>
+
+    <script src="/static/ajax.js"></script>
+  </body>
+</html>

@@ -127,7 +127,9 @@ class Contribution(db.Model):
                 'committee_id':self.committee_id,
                 'contribution_date':self.contribution_date,
                 'amount':self.amount,
-                'transaction_id':self.transaction_id}
+                'transaction_id':self.transaction_id,
+                'state':self.state,
+                'individual':self.individual}
 
 
 class Cash(db.Model):
@@ -158,4 +160,3 @@ if __name__ == "__main__":
     # query it executes.
 
     connect_to_db(app)
-

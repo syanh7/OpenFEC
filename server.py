@@ -1,4 +1,3 @@
-"""Server for movie ratings app."""
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
@@ -17,7 +16,7 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     ''' View Hompage '''
 
-    return render_template('homepage.html')
+    return render_template('index.html')
     
 
 @app.route('/president')
