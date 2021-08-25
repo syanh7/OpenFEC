@@ -1,5 +1,5 @@
 $('#president-race').on('click', () => {
-    $('#candidate-list').html('');
+    default_display_state();
     $.get('/president',  (res) => {
         for (const candidate of res) {
             create_candidate_and_event(candidate);
@@ -8,7 +8,8 @@ $('#president-race').on('click', () => {
 });
 
 $('#senate-race').on('click', () => {
-    $('#state-id-senate').html('');
+    default_display_state()
+    $('#state-id-senate').html('')
     $.get('/senate',  (res) => {
         for (const state of res) {
             $('#state-id-senate').append(`<option value=${state}>${state}</option>`);
@@ -17,6 +18,7 @@ $('#senate-race').on('click', () => {
 });
 
 $('#house-race').on('click', () => {
+    default_display_state();
     $('#state-id-house').html('');
     $.get('/house',  (res) => {
         for (const state of res) {
@@ -27,7 +29,7 @@ $('#house-race').on('click', () => {
 
 $('#get-state-senate').on('submit', (evt) => {
     evt.preventDefault();
-    $('#candidate-list').html('');
+    default_display_state();
     const state = $('#state-id-senate').val()
     $.get(`/senate/${state}`,  (res) => {
         for (const candidate of res) {
@@ -38,6 +40,7 @@ $('#get-state-senate').on('submit', (evt) => {
 
 $('#get-state-house').on('submit', (evt) => {
     evt.preventDefault();
+    default_display_state()
     $('#district-id').html('');
     const state = $('#state-id-house').val()
     $.get(`/house/${state}`,  (res) => {
@@ -49,7 +52,7 @@ $('#get-state-house').on('submit', (evt) => {
 
 $('#get-district').on('submit', (evt) => {
     evt.preventDefault();
-    $('#candidate-list').html('');
+    default_display_state()
     const state = $('#state-id-house').val()
     const district = $('#district-id').val()
     $.get(`/house/${state}/${district}`,  (res) => {
@@ -63,7 +66,7 @@ $('#get-district').on('submit', (evt) => {
 function create_candidate_and_event(candidate){
     $('#candidate-list').append(`<button id=${candidate.candidate_id} value=${candidate.candidate_id}>${candidate.name}</button>`);
             $(`#${candidate.candidate_id}`).on('click', () => {
-                $('#candidate-list').html('');
+                default_display_state();
                 $.get(`/candidate/${candidate.candidate_id}`, (res) => {
                     const candidate = res.candidate;
                     const contributions = res.contributions;
@@ -78,4 +81,9 @@ function create_candidate_and_event(candidate){
 
                 });
             });
+}
+
+function default_display_state() {
+    $('#candidate-list').html('');
+    $('#display_candidate').html('');
 }
