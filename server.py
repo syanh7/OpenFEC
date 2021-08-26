@@ -55,7 +55,7 @@ def all_house():
 
 @app.route('/house/<state>')
 def all_district(state):
-    '''Return all house races of a state'''
+    ''' Return all house races of a state '''
 
     races = crud.races_in_state('H', state)
 
@@ -64,7 +64,7 @@ def all_district(state):
 
 @app.route('/house/<state>/<district>')
 def house_election(state, district):
-    ''' Return House Candidates by State/District'''
+    ''' Return House Candidates by State/District '''
 
     candidates = crud.get_candidates(state, 'H', district)
 
@@ -73,7 +73,7 @@ def house_election(state, district):
 
 @app.route('/candidate/<candidate_id>')
 def candidate_info(candidate_id):
-    '''return candidate information, return candidate contributions information'''
+    ''' Return candidate information, return candidate contributions information '''
 
     candidate = crud.get_candidate(candidate_id)
 
