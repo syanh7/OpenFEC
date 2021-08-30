@@ -1,5 +1,5 @@
 export function bubbleChart() {
-    const width = 1880;
+    const width = 1100;
     const height = 1000;
 
   

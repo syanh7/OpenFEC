@@ -1,5 +1,5 @@
 *.sh
 env
 *.DS_STORE
-*.pycopenfec_all_candidates_and_races_and_committees_and_org_contributions.sql openfec_all_candidates_and_races_and_committees.sql openfec_all_candidates_and_races.sql openfec.sql
-openfec_all_candidates_and_races_and_committees_and_org_contributions.sql openfec_all_candidates_and_races_and_committees.sql openfec_all_candidates_and_races.sql openfec.sql
+*.pyc
+*.sql
