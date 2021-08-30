@@ -79,7 +79,13 @@ def candidate_info(candidate_id):
 
     contributions = candidate.contributions
 
-    return jsonify({'candidate':candidate.as_dict(), 'contributions':[{'committee':contribution.committee.as_dict(), 'contribution':contribution.as_dict()} for contribution in contributions]})
+    return jsonify({'candidate':candidate.as_dict(), 
+                    'contributions':[{
+                        'committee':contribution.committee.name, 
+                        'amount':contribution.amount,
+                        'state': contribution.committee.state,
+                        'individual': contribution.individual,
+                        'party': contribution.committee.party} for contribution in contributions]})
 
 
 

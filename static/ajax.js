@@ -1,3 +1,5 @@
+import {bubbleChart} from "./d3.js";
+
 /* Get all of the candidates for president
 and populate the candidate list container*/
 $('#president-race').on('click', () => {
@@ -89,21 +91,44 @@ function create_candidate_and_event(candidate){
         $.get(`/candidate/${candidate.candidate_id}`, (res) => {
             const candidate = res.candidate;
             const contributions = res.contributions;
-            $('#display_candidate').html('');
-            $('#display_candidate').append(`<p>${candidate.name}</p>`);
-            $('#display_candidate').append(`<p>${candidate.state}</p>`);
-            $('#display_candidate').append(`<p>${candidate.incumbent}</p>`);
-            for (const contribution of contributions) {
-                $('#display_candidate').append(`<p>${contribution.committee.name}</p>`);
-                $('#display_candidate').append(`<p>${contribution.contribution.amount}</p>`);
-            }
+            populate_candidate(candidate, contributions);
         });
     });
-}
+};
 
 
 
 function default_display_state() {
     $('#candidate-list').html('');
     $('#display_candidate').html('');
-}
+    $('#contributions').html('');
+};
+
+function populate_candidate(candidate, contributions) {
+    $('#display_candidate').html('');
+    
+    $('#display_candidate').append(`<h3>${candidate.name}</h3>`);
+    $('#display_candidate').append(`<p>${candidate.state}</p>`);
+    $('#display_candidate').append(`<p>${candidate.incumbent}</p>`);
+
+    var contribution = [];
+    
+    for (const ele of contributions) {
+        if (ele['individual'] === false) {
+            var individual = "1";
+        }
+        else {
+           var individual = "2";
+        } 
+
+        contribution.push({"committee":ele['committee'], "individual":individual, "amount":ele['amount']});
+    };
+
+    let myBubbleChart = bubbleChart();
+
+    // function called once promise is resolved and data is loaded from csv
+    // calls bubble chart function to display inside #vis div
+
+    myBubbleChart('#contributions', contribution);
+};
+
