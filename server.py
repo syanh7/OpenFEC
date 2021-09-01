@@ -1,16 +1,27 @@
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
+from flask_caching import Cache
 from model import connect_to_db
 
 import crud
 
 from jinja2 import StrictUndefined
 
+config = {
+    "DEBUG": True,          # some Flask specific configs
+    "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 800
+}
+
 app = Flask(__name__)
 app.app_context().push()
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+
+app.config.from_mapping(config)
+cache = Cache(app)
+
 
 @app.route('/')
 def homepage():
@@ -19,15 +30,20 @@ def homepage():
     return render_template('index.html')
     
 
-@app.route('/president')
+@app.route('/president.json')
+@cache.cached()
 def presidential_election():
     ''' Return presidential Candidates '''
-    candidates = crud.get_candidates()
 
+
+    candidates = crud.get_candidates()
     return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
-@app.route('/senate')
+    
+
+@app.route('/senate.json')
+@cache.cached()
 def all_senate():
     ''' Return all races with a senate election '''
 
@@ -36,7 +52,8 @@ def all_senate():
     return jsonify([race.state for race in races])
 
 
-@app.route('/senate/<state>')
+@app.route('/senate/<state>.json')
+@cache.cached()
 def senate_by_state(state):
     ''' Return Sentate Candidates in a state '''
     candidates = crud.get_candidates(state, 'S')
@@ -44,7 +61,8 @@ def senate_by_state(state):
     return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
-@app.route('/house')
+@app.route('/house.json')
+@cache.cached()
 def all_house():
     ''' Return all races with a house election, distinct by state '''
 
@@ -53,7 +71,8 @@ def all_house():
     return jsonify([race.state for race in races if race.district != '00'])
 
 
-@app.route('/house/<state>')
+@app.route('/house/<state>.json')
+@cache.cached()
 def all_district(state):
     ''' Return all house races of a state '''
 
@@ -62,7 +81,8 @@ def all_district(state):
     return jsonify([race.district for race in races if race.district != '00'])
 
 
-@app.route('/house/<state>/<district>')
+@app.route('/house/<state>/<district>.json')
+@cache.cached()
 def house_election(state, district):
     ''' Return House Candidates by State/District '''
 
@@ -71,7 +91,8 @@ def house_election(state, district):
     return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
-@app.route('/candidate/<candidate_id>')
+@app.route('/candidate/<candidate_id>.json')
+@cache.cached()
 def candidate_info(candidate_id):
     ''' Return candidate information, return candidate contributions information '''
 

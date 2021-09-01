@@ -3,8 +3,12 @@ import {bubbleChart} from "./d3.js";
 /* Get all of the candidates for president
 and populate the candidate list container*/
 $('#president-race').on('click', () => {
+    //reset the display state
     default_display_state();
-    $.get('/president',  (res) => {
+    //get all presidential candidates from route
+    $.get('/president.json',  (res) => {
+        //iterate throught the candidates and create 
+        //buttons and event handlers for each one
         for (const candidate of res) {
             create_candidate_and_event(candidate);
         }
@@ -17,7 +21,7 @@ will be in and populate the state dropdown menu */
 $('#senate-race').on('click', () => {
     default_display_state()
     $('#state-id-senate').html('')
-    $.get('/senate',  (res) => {
+    $.get('/senate.json',  (res) => {
         for (const state of res) {
             $('#state-id-senate').append(`<option value=${state}>${state}</option>`);
         };
@@ -30,7 +34,7 @@ will be in and populate the state dropdown menu */
 $('#house-race').on('click', () => {
     default_display_state();
     $('#state-id-house').html('');
-    $.get('/house',  (res) => {
+    $.get('/house.json',  (res) => {
         for (const state of res) {
             $('#state-id-house').append(`<option value=${state}>${state}</option>`);
         };
@@ -44,7 +48,7 @@ $('#get-state-senate').on('submit', (evt) => {
     evt.preventDefault();
     default_display_state();
     const state = $('#state-id-senate').val()
-    $.get(`/senate/${state}`,  (res) => {
+    $.get(`/senate/${state}.json`,  (res) => {
         for (const candidate of res) {
             create_candidate_and_event(candidate);
         }
@@ -59,7 +63,7 @@ $('#get-state-house').on('submit', (evt) => {
     default_display_state()
     $('#district-id').html('');
     const state = $('#state-id-house').val()
-    $.get(`/house/${state}`,  (res) => {
+    $.get(`/house/${state}.json`,  (res) => {
         for (const district of res) {
             $('#district-id').append(`<option value=${district}>${district}</option>`);
         }
@@ -74,7 +78,7 @@ $('#get-district').on('submit', (evt) => {
     default_display_state()
     const state = $('#state-id-house').val()
     const district = $('#district-id').val()
-    $.get(`/house/${state}/${district}`,  (res) => {
+    $.get(`/house/${state}/${district}.json`,  (res) => {
         for (const candidate of res) {
             create_candidate_and_event(candidate);
         }
@@ -88,7 +92,7 @@ function create_candidate_and_event(candidate){
     $('#candidate-list').append(`<button id=${candidate.candidate_id} value=${candidate.candidate_id}>${candidate.name}</button>`);
     $(`#${candidate.candidate_id}`).on('click', () => {
         default_display_state();
-        $.get(`/candidate/${candidate.candidate_id}`, (res) => {
+        $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
             const candidate = res.candidate;
             const contributions = res.contributions;
             populate_candidate(candidate, contributions);
@@ -105,9 +109,7 @@ function default_display_state() {
 };
 
 function populate_candidate(candidate, contributions) {
-    $('#display_candidate').html('');
-    
-    $('#display_candidate').append(`<h3>${candidate.name}</h3>`);
+        $('#display_candidate').append(`<h3>${candidate.name}</h3>`);
     $('#display_candidate').append(`<p>${candidate.state}</p>`);
     $('#display_candidate').append(`<p>${candidate.incumbent}</p>`);
 
