@@ -4,7 +4,7 @@ from flask import (Flask, render_template, request, flash, session,
 from flask_caching import Cache
 from model import connect_to_db
 
-import crud
+import crud, helper
 
 from jinja2 import StrictUndefined
 
@@ -40,8 +40,6 @@ def presidential_election():
     return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
 
 
-    
-
 @app.route('/senate.json')
 @cache.cached()
 def all_senate():
@@ -58,7 +56,10 @@ def senate_by_state(state):
     ''' Return Sentate Candidates in a state '''
     candidates = crud.get_candidates(state, 'S')
 
-    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
+    return jsonify([{'name':candidate.name, 
+                     'candidate_id':candidate.candidate_id, 
+                     'party':candidate.party, 
+                     'incumbent':candidate.incumbent} for candidate in candidates])
 
 
 @app.route('/house.json')
@@ -88,7 +89,10 @@ def house_election(state, district):
 
     candidates = crud.get_candidates(state, 'H', district)
 
-    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
+    return jsonify([{'name':candidate.name, 
+                     'candidate_id':candidate.candidate_id, 
+                     'party':candidate.party,
+                     'incumbent':candidate.incumbent} for candidate in candidates])
 
 
 @app.route('/candidate/<candidate_id>.json')
@@ -100,7 +104,10 @@ def candidate_info(candidate_id):
 
     contributions = candidate.contributions
 
+    total = helper.total_contributions(contributions)
+
     return jsonify({'candidate':candidate.as_dict(), 
+                    'total':total,
                     'contributions':[{
                         'committee':contribution.committee.name, 
                         'amount':contribution.amount,

@@ -12,7 +12,7 @@ export function bubbleChart() {
     // these will be set in createNodes and chart functions
     let svg = null;
     let bubbles = null;
-    let labels = null;
+    // let labels = null;
     let nodes = [];
   
     // charge is dependent on size of the bubble, so bigger towards the middle
@@ -71,7 +71,8 @@ export function bubbleChart() {
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('viewbox', '0 0 300 300')
+        .attr('viewbox', '0 0 1100 1000')
+        
   
       // bind nodes data to circle elements
       const elements = svg.selectAll('.bubble')
@@ -79,26 +80,38 @@ export function bubbleChart() {
         .enter()
         .append('g')
         
+      //create the bubbles with the attributes of
+      //each committee donation  
       bubbles = elements
         .append('circle')
         .classed('bubble', true)
         .attr('r', d => d.radius)
         .attr('fill', d => fillColour(Math.trunc(d.amount/250)))
+
+
+
   
-      // // labels
-      labels = elements
-        .append('text')
-        .attr('dy', '.3em')
-        .style('text-anchor', 'middle')
-        .style('font-size', 10)
-        .text('')
+      // // // labels
+      // labels = elements
+      //   .append('text')
+      //   .attr('dy', '.3em')
+      //   .style('text-anchor', 'middle')
+      //   .style('font-size', 10)
+      //   .text('')
+
   
       // set simulation's nodes to our newly created nodes array
       // simulation starts running automatically once nodes are set
       simulation.nodes(nodes)
         .on('tick', ticked)
-        .restart();
+        .restart()
+      
+      //after the simulation, set each bubbles title
+      bubbles        
+        .append('title')
+        .text(d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount);
     }
+
   
     // callback function called after every tick of the force simulation
     // here we do the actual repositioning of the circles based on current x and y value of their bound node data
@@ -107,16 +120,17 @@ export function bubbleChart() {
       bubbles
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
-        .append('title')
-        .text(d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount)
 
   
-      labels
-        .attr('x', d => d.x)
-        .attr('y', d => d.y)
+      // labels
+      //   .attr('x', d => d.x)
+      //   .attr('y', d => d.y)
 
     }
 
+
     // return chart function from closure
+
     return chart;
+
   }

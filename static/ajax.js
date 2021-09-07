@@ -94,8 +94,9 @@ function create_candidate_and_event(candidate){
         default_display_state();
         $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
             const candidate = res.candidate;
+            const total = res.total;
             const contributions = res.contributions;
-            populate_candidate(candidate, contributions);
+            populate_candidate(candidate, total, contributions);
         });
     });
 };
@@ -108,10 +109,12 @@ function default_display_state() {
     $('#contributions').html('');
 };
 
-function populate_candidate(candidate, contributions) {
-        $('#display_candidate').append(`<h3>${candidate.name}</h3>`);
-    $('#display_candidate').append(`<p>${candidate.state}</p>`);
-    $('#display_candidate').append(`<p>${candidate.incumbent}</p>`);
+function populate_candidate(candidate, total, contributions) {
+    $('#display_candidate').append(`<h3 id='candidate' value='${candidate.candidate_id}'>Candidate: ${candidate.name}</h3>`);
+    $('#display_candidate').append(`<p>State: ${candidate.state}</p>`);
+    $('#display_candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
+    $('#display_candidate').append(`<p>Party: ${candidate.party}</p>`);
+    $('#display_candidate').append(`<p>Total Amount Raised: ${total}</p>`);
 
     var contribution = [];
     
