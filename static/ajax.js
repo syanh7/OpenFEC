@@ -125,14 +125,7 @@ function populate_candidate(candidate, total, contributions) {
     var contribution = [];
     
     for (const ele of contributions) {
-        if (ele['individual'] === false) {
-            var individual = "1";
-        }
-        else {
-           var individual = "2";
-        } 
-
-        contribution.push({"committee":ele['committee'], "individual":individual, "amount":ele['amount']});
+        contribution.push({"committee":ele['committee'], "individual":ele['individual'], "amount":ele['amount']});
     };
 
     let myBubbleChart = bubbleChart();

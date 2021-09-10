@@ -87,17 +87,8 @@ export function bubbleChart() {
         .classed('bubble', true)
         .attr('r', d => d.radius)
         .attr('fill', d => fillColour(Math.trunc(d.amount/250)))
-
-
-
-  
-      // // // labels
-      // labels = elements
-      //   .append('text')
-      //   .attr('dy', '.3em')
-      //   .style('text-anchor', 'middle')
-      //   .style('font-size', 10)
-      //   .text('')
+        .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
+        .attr('data-toggle', 'tooltip');
 
   
       // set simulation's nodes to our newly created nodes array
@@ -105,11 +96,8 @@ export function bubbleChart() {
       simulation.nodes(nodes)
         .on('tick', ticked)
         .restart()
-      
-      //after the simulation, set each bubbles title
-      bubbles        
-        .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
-        .attr('data-toggle', 'tooltip');
+    
+
     }
 
   
@@ -120,11 +108,6 @@ export function bubbleChart() {
       bubbles
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
-
-  
-      // labels
-      //   .attr('x', d => d.x)
-      //   .attr('y', d => d.y)
 
     }
 
