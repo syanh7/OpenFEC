@@ -108,8 +108,8 @@ export function bubbleChart() {
       
       //after the simulation, set each bubbles title
       bubbles        
-        .append('title')
-        .text(d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount);
+        .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
+        .attr('data-toggle', 'tooltip');
     }
 
   

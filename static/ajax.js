@@ -97,24 +97,30 @@ function create_candidate_and_event(candidate){
             const total = res.total;
             const contributions = res.contributions;
             populate_candidate(candidate, total, contributions);
+            populate_contribution_table(contributions);
         });
     });
 };
 
 
-
+/* Resets the display state to the default
+so that it is ready to display another candidate */
 function default_display_state() {
     $('#candidate-list').html('');
     $('#display_candidate').html('');
     $('#contributions').html('');
+    $('#contribution-table').html('');
 };
 
+/* When a candidate is selected, their information is diplayed
+and the visualization is activated*/
 function populate_candidate(candidate, total, contributions) {
     $('#display_candidate').append(`<h3 id='candidate' value='${candidate.candidate_id}'>Candidate: ${candidate.name}</h3>`);
     $('#display_candidate').append(`<p>State: ${candidate.state}</p>`);
     $('#display_candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
     $('#display_candidate').append(`<p>Party: ${candidate.party}</p>`);
     $('#display_candidate').append(`<p>Total Amount Raised: ${total}</p>`);
+    $('#display_candidate').append(`<a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">Click to view ${candidate.name} on FEC website</a>`)
 
     var contribution = [];
     
@@ -135,5 +141,32 @@ function populate_candidate(candidate, total, contributions) {
     // calls bubble chart function to display inside #vis div
 
     myBubbleChart('#contributions', contribution);
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+
+};
+
+
+function populate_contribution_table(contributions) {
+    $('#contribution-table').append('<tr>');
+    $('#contribution-table').append('<th title="click me to sort" onclick="sortTable(0)">Committee</th>');
+    $('#contribution-table').append('<th title="click me to sort" onclick="sortTable(1)">Amount </th>');
+    $('#contribution-table').append('<th title="click me to sort" onclick="sortTable(3)"> State</th>');
+    $('#contribution-table').append('</tr>');
+
+    for (const contribution of contributions) {
+        $('#contribution-table').append('<tr>');
+        $('#contribution-table').append(`<a href="https://www.fec.gov/data/committee/${contribution['committee_id']}/" target="_blank" rel="noopener">${contribution['committee']}</a>`);
+        $('#contribution-table').append(`<td>${contribution['amount']}</td>`);
+        $('#contribution-table').append(`<td>${contribution['state']}</td>`);
+        $('#contribution-table').append('</tr>');
+
+    };
+};
+
+
+function sortTable(n) {
+
 };
 
