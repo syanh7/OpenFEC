@@ -166,6 +166,10 @@ def get_contributions_by_candidate(candidate):
     return Contribution.query.join(Candidate).filter((Candidate.candidate_id == candidate.candidate_id)).all()
 
 
+#returns all contributions by committee
+def get_contributions_by_committee(committee):
+    return Contribution.query.join(Committee).filter((Committee.committee_id == committee.committee_id)).all()
+
 
 def mass_commit():
     db.session.commit()

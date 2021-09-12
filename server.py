@@ -106,15 +106,41 @@ def candidate_info(candidate_id):
 
     total = helper.total_contributions(contributions)
 
-    return jsonify({'candidate':candidate.as_dict(), 
+    return jsonify({'candidate':candidate.as_dict(),
+                    'race':candidate.candidate_race[0].race.as_dict(), 
                     'total':total,
                     'contributions':[{
+                        'contribution_id': contribution.contribution_id,
                         'committee_id':contribution.committee_id,
                         'committee':contribution.committee.name, 
                         'amount':contribution.amount,
                         'state': contribution.committee.state,
                         'individual': contribution.individual,
                         'party': contribution.committee.party} for contribution in contributions]})
+
+
+
+
+@app.route('/committee/<committee_id>.json')
+@cache.cached()
+def committee_donations(committee_id):
+    ''' Return committee information, return committee donation information '''
+
+    committee = crud.get_committee(committee_id)
+
+    contributions = crud.get_contributions_by_committee(committee)
+
+    total = helper.total_contributions(contributions)
+
+    return jsonify({'committee':committee.as_dict(), 
+                    'total':total,
+                    'candidates':[{
+                        'contribution_id': contribution.contribution_id,
+                        'candidate_id':contribution.candidate_id,
+                        'name':contribution.candidate.name, 
+                        'amount':contribution.amount,
+                        'state': contribution.candidate.state,
+                        'party': contribution.candidate.party} for contribution in contributions]})
 
 
 

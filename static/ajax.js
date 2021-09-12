@@ -96,41 +96,49 @@ function create_candidate_and_event(candidate){
             const candidate = res.candidate;
             const total = res.total;
             const contributions = res.contributions;
-            populate_candidate(candidate, total, contributions);
+            const race = res.race;
+            populate_candidate(candidate, total, contributions, race);
             initialize_contribution_table(contributions);
         });
     });
 };
 
-
 /* Resets the display state to the default
 so that it is ready to display another candidate */
 function default_display_state() {
     $('#candidate-list').html('');
-    $('#display_candidate').html('');
+    $('#display-candidate').html('');
+    $('#display-committee').html('');  
     $('#contributions').html('');
     $('#contribution-table-head').html('');
     $('#contribution-table-body').html('');
+    $('#donations-table-head').html('');
+    $('#donations-table-body').html('');
 };
 
 /* When a candidate is selected, their information is diplayed
 and the visualization is activated*/
-function populate_candidate(candidate, total, contributions) {
-    $('#display_candidate').append(`<h3><a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">${candidate.name}</a></h3>`);
-    $('#display_candidate').append(`<p>State: ${candidate.state}</p>`);
-    $('#display_candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
-    $('#display_candidate').append(`<p>Party: ${candidate.party}</p>`);
-    $('#display_candidate').append(`<p>Total Amount Raised: ${total}</p>`);
+function populate_candidate(candidate, total, contributions, race) {
+    $('#display-candidate').append(`<h3><a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">${candidate.name}</a></h3>`);
+    $('#display-candidate').append(`<p>State: ${candidate.state}</p>`);
+    $('#display-candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
+    $('#display-candidate').append(`<p>Party: ${candidate.party}</p>`);
+    $('#display-candidate').append(`<p>Election Cycle: ${race.cycle}</p>`);
+    $('#display-candidate').append(`<p>District: ${race.district}</p>`);
+    $('#display-candidate').append(`<p>Office: ${race.office}</p>`);
+    $('#display-candidate').append(`<p>Total: ${total}</p>`);
+
+
 
     var contribution = [];
     
     for (const ele of contributions) {
-        contribution.push({"committee":ele['committee'], "individual":ele['individual'], "amount":ele['amount']});
+        contribution.push({"committee":ele['committee'], "committee_id":ele['committee_id'], "amount":ele['amount']});
     };
 
     let myBubbleChart = bubbleChart();
 
-    // function called once promise is resolved and data is loaded from csv
+    // function called once promise is resolved and data is loaded from arr of dicts
     // calls bubble chart function to display inside #vis div
 
     myBubbleChart('#contributions', contribution);
@@ -141,7 +149,9 @@ function populate_candidate(candidate, total, contributions) {
 };
 
 
-
+//Initialize the contribution table with default header values
+//and pass the contributions array to the sort event handlers
+//and the populate contribution tables
 function initialize_contribution_table(contributions) {
     $('#contribution-table-head').html('');
     $('#contribution-table-head').append('<tr>');
@@ -156,30 +166,36 @@ function initialize_contribution_table(contributions) {
 
 };
 
+//takes in the contribution array and populates the data of the
+//contributions
 function populate_contribution_table(contributions) {
     $('#contribution-table-body').html('');
     for (const contribution of contributions) {
         $('#contribution-table-body').append(`<tr>
-                                        <td value=${contribution['committee']}><a href="https://www.fec.gov/data/committee/${contribution['committee_id']}/" target="_blank" rel="noopener">${contribution['committee']}</a></td>
+                                        <td value="${contribution['committee']}" id="get-donations-${contribution['contribution_id']}">${contribution['committee']}</td>
                                         <td value=${contribution['amount']}>${contribution['amount']}</td>
                                         <td value=${contribution['state']}>${contribution['state']}</td>
                                         </tr>`);
+        committee_click_event_handler(contribution.committee_id, contribution.contribution_id);
     };
 };
 
+//creates event handlers so when the headers of the table are clicked
+//the column associated with it is toggled to be sorted
+//initially desc but asc on second 
 function create_sort_event_handler(contributions) {
     $('#committee-header').on('click', () => {
         if ($('#committee-header').attr('sorted') === 'desc'){
             contributions.sort(function(a,b) {
                 $('#committee-header').attr('sorted', 'asc');
-                return b.committee < a.committee;
+                return b.committee > a.committee;
             });
 
         }
         else{
             contributions.sort(function(a,b) {
                 $('#committee-header').attr('sorted', 'desc');
-                return a.committee < b.committee;
+                return a.committee > b.committee;
             });
         };
         $('#amount-header').attr('sorted', '')
@@ -192,14 +208,14 @@ function create_sort_event_handler(contributions) {
         if ($('#amount-header').attr('sorted') === 'desc'){
             contributions.sort(function(a,b) {
                 $('#amount-header').attr('sorted', 'asc');
-                return b.amount - a.amount;
+                return a.amount - b.amount;
             });
 
         }
         else{
             contributions.sort(function(a,b) {
                 $('#amount-header').attr('sorted', 'desc');
-                return a.amount - b.amount;
+                return b.amount - a.amount;
             });
         };
         $('#committee-header').attr('sorted', '')
@@ -211,19 +227,169 @@ function create_sort_event_handler(contributions) {
         if ($('#state-header').attr('sorted') === 'desc'){
             contributions.sort(function(a,b) {
                 $('#state-header').attr('sorted', 'asc');
-                return b.state < a.state;
+                return b.state > a.state;
             });
 
         }
         else{
             contributions.sort(function(a,b) {
                 $('#state-header').attr('sorted', 'desc');
-                return a.state < b.state;
+                return a.state > b.state;
             });
         };
         $('#amount-header').attr('sorted', '')
         $('#committee-header').attr('sorted', '')
         populate_contribution_table(contributions);
+    });
+};
+
+
+//creates event handlers so user can click on a committee row and get 
+//all the donations a committee has made
+function committee_click_event_handler(committee_id, contribution_id) {
+    $(`#get-donations-${contribution_id}`).unbind('click');
+    $(`#get-donations-${contribution_id}`).on('click', () => {
+        default_display_state();
+        $.get(`/committee/${committee_id}.json`,  (res) => {
+            const committee = res.committee;
+            const candidates = res.candidates;
+            populate_committee(committee, res.total);
+            initialize_donations_table()
+            populate_donations_table(candidates);
+            create_sort_event_handler_candidate(candidates);
+
+
+        });
+    });
+};
+
+//populate basic information about the committee
+function populate_committee(committee, total) {
+    $('#display-committee').append(`<p>${committee.name} ${committee.state} ${total}<p>`)
+
+};
+
+//initalizaes the committees donation tables
+function initialize_donations_table() {
+    $('#donations-table-head').append('<tr>');
+    $('#donations-table-head').append('<th id ="candidate-header" value="candidate">Candidate</th>');
+    $('#donations-table-head').append('<th id ="amount-header" value="amounts">Amount</th>');
+    $('#donations-table-head').append('<th id ="state-header" value="states">State</th>');
+    $('#donations-table-head').append('<th id ="party-header" value="party">Party</th>');
+    $('#donations-table-head').append('</tr>');
+
+};
+
+//populates the committees donation table with candidates
+function populate_donations_table(candidates) {
+    $('#donations-table-body').html('');
+    for (const candidate of candidates) {
+        $('#donations-table-body').append(`<tr>
+                                        <td id =${candidate.contribution_id} value=${candidate['candidate_id']}><a>${candidate['name']}</a></td>
+                                        <td value=${candidate['amount']}>${candidate['amount']}</td>
+                                        <td value=${candidate['state']}>${candidate['state']}</td>
+                                        <td value=${candidate['party']}>${candidate['party']}</td>
+                                        </tr>`);
+        candidate_on_click(candidate);
+    };
+};
+
+function candidate_on_click(candidate) {
+    $(`#${candidate.contribution_id}`).on('click', () => {
+        default_display_state();
+        $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
+            const candidate = res.candidate;
+            const total = res.total;
+            const contributions = res.contributions;
+            const race = res.race;
+            populate_candidate(candidate, total, contributions, race);
+            initialize_contribution_table(contributions);
+        });
+    });
+};
+
+
+//allows user to sort the donation table by clicking the header
+function create_sort_event_handler_candidate(candidates) {
+    $('#candidate-header').on('click', () => {
+        if ($('#candidate-header').attr('sorted') === 'desc'){
+            candidates.sort(function(a,b) {
+                $('#candidate-header').attr('sorted', 'asc');
+                return b.name > a.name;
+            });
+
+        }
+        else{
+            candidates.sort(function(a,b) {
+                $('#candidate-header').attr('sorted', 'desc');
+                return a.name > b.name;
+            });
+        };
+        $('#amount-header').attr('sorted', '')
+        $('#state-header').attr('sorted', '')
+        $('#party-header').attr('sorted', '')
+        populate_donations_table(candidates);
+    });
+
+
+    $('#amount-header').on('click', () => {
+        if ($('#amount-header').attr('sorted') === 'desc'){
+            candidates.sort(function(a,b) {
+                $('#amount-header').attr('sorted', 'asc');
+                return a.amount - b.amount;
+            });
+
+        }
+        else{
+            candidates.sort(function(a,b) {
+                $('#amount-header').attr('sorted', 'desc');
+                return b.amount - a.amount;
+            });
+        };
+        $('#candidate-header').attr('sorted', '')
+        $('#state-header').attr('sorted', '')
+        $('#party-header').attr('sorted', '')
+        populate_donations_table(candidates);
+    });
+
+    $('#state-header').on('click', () => {
+        if ($('#state-header').attr('sorted') === 'desc'){
+            candidates.sort(function(a,b) {
+                $('#state-header').attr('sorted', 'asc');
+                return b.state > a.state;
+            });
+
+        }
+        else{
+            candidates.sort(function(a,b) {
+                $('#state-header').attr('sorted', 'desc');
+                return a.state > b.state;
+            });
+        };
+        $('#amount-header').attr('sorted', '')
+        $('#candidate-header').attr('sorted', '')
+        $('#party-header').attr('sorted', '')
+        populate_donations_table(candidates);
+    });
+
+    $('#party-header').on('click', () => {
+        if ($('#party-header').attr('sorted') === 'desc'){
+            candidates.sort(function(a,b) {
+                $('#party-header').attr('sorted', 'asc');
+                return b.party > a.party;
+            });
+
+        }
+        else{
+            candidates.sort(function(a,b) {
+                $('#party-header').attr('sorted', 'desc');
+                return a.party > b.party;
+            });
+        };
+        $('#amount-header').attr('sorted', '')
+        $('#state-header').attr('sorted', '')
+        $('#candidate-header').attr('sorted', '')
+        populate_donations_table(candidates);
     });
 };
 

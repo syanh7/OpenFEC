@@ -79,6 +79,7 @@ export function bubbleChart() {
         .data(nodes, d => d.committee)
         .enter()
         .append('g')
+        .attr('id', d => 'circle-' + d.committee_id)
         
       //create the bubbles with the attributes of
       //each committee donation  
@@ -109,8 +110,9 @@ export function bubbleChart() {
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
 
-    }
 
+
+    }
 
     // return chart function from closure
 
