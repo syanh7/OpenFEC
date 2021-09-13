@@ -37,7 +37,7 @@ def presidential_election():
 
 
     candidates = crud.get_candidates()
-    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id} for candidate in candidates])
+    return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id, 'party':candidate.party} for candidate in candidates])
 
 
 @app.route('/senate.json')

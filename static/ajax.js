@@ -1,12 +1,21 @@
 import {bubbleChart} from "./d3.js";
 
+$('#race-title').on('click', () => {
+    default_display_state();
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#description').removeClass('hidden');
+
+});
+
 /* Get all of the candidates for president
 and populate the candidate list container*/
 $('#president-race').on('click', () => {
     //reset the display state
     default_display_state();
-    $('#select-state-senate').addClass('hidden')
-    $('#select-state-house').addClass('hidden')
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#description').addClass('hidden');
     //get all presidential candidates from route
     $.get('/president.json',  (res) => {
         //iterate throught the candidates and create 
@@ -24,6 +33,7 @@ $('#senate-race').on('click', () => {
     default_display_state();
     $('#select-state-senate').removeClass('hidden');
     $('#select-state-house').addClass('hidden');
+    $('#description').addClass('hidden');
     $('#state-id-senate').html('');
     $.get('/senate.json',  (res) => {
         for (const state of res) {
@@ -39,6 +49,7 @@ $('#house-race').on('click', () => {
     default_display_state();
     $('#select-state-senate').addClass('hidden');
     $('#select-state-house').removeClass('hidden');
+    $('#description').addClass('hidden');
     $('#state-id-house').html('');
     $.get('/house.json',  (res) => {
         for (const state of res) {
@@ -51,8 +62,9 @@ $('#house-race').on('click', () => {
 any federal election candidate */
 $('#all-committees').on('click', () => {
     default_display_state();
-    $('#select-state-senate').addClass('hidden')
-    $('#select-state-house').addClass('hidden')
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#description').addClass('hidden');
     $.get('/committee.json',  (res) => {
         for (const committee of res) {
             create_committee_and_event(committee);
@@ -107,7 +119,7 @@ $('#get-district').on('submit', (evt) => {
 /* Dynamically creates a candidate button to select a candidate and
 creates an event handler for that button */
 function create_candidate_and_event(candidate){
-    $('#candidate-list').append(`<button id=${candidate.candidate_id} value=${candidate.candidate_id}>${candidate.name}</button>`);
+    $('#candidate-list').append(`<button class=col-2 id=${candidate.candidate_id} value=${candidate.candidate_id}>${candidate.name}</button>`);
     $(`#${candidate.candidate_id}`).on('click', () => {
         default_display_state();
         $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
@@ -125,7 +137,7 @@ function create_candidate_and_event(candidate){
 //creates event handlers so user can click on a committee row and get 
 //all the donations a committee has made
 function create_committee_and_event(committee) {
-    $('#committee-list').append(`<button id=committee-${committee.committee_id} value=${committee.committee_id}>${committee.name}</button>`);
+    $('#committee-list').append(`<button class=col-2 id=committee-${committee.committee_id} value=${committee.committee_id}>${committee.name}</button>`);
     $(`#committee-${committee.committee_id}`).on('click', () => {
         default_display_state();
         $.get(`/committee/${committee.committee_id}.json`,  (res) => {
@@ -157,6 +169,7 @@ and the visualization is activated*/
 function populate_candidate(candidate, total, contributions, race) {
     $('#select-state-senate').addClass('hidden')
     $('#select-state-house').addClass('hidden')
+    $('#description').addClass('hidden');
     $('#display-candidate').append(`<h3><a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">${candidate.name}</a></h3>`);
     $('#display-candidate').append(`<p>State: ${candidate.state}</p>`);
     $('#display-candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
@@ -191,13 +204,14 @@ function populate_candidate(candidate, total, contributions, race) {
 //and pass the contributions array to the sort event handlers
 //and the populate contribution tables
 function initialize_contribution_table(contributions) {
-    $('#select-state-senate').addClass('hidden')
-    $('#select-state-house').addClass('hidden')
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#description').addClass('hidden');
     $('#contribution-table-head').html('');
     $('#contribution-table-head').append('<tr>');
-    $('#contribution-table-head').append('<th id ="committee-header" value="committees">Committee</th>');
-    $('#contribution-table-head').append('<th id ="amount-header" value="amounts">Amount</th>');
-    $('#contribution-table-head').append('<th id ="state-header" value="states">State</th>');
+    $('#contribution-table-head').append('<th class=col-6 id ="committee-header" value="committees">Committee</th>');
+    $('#contribution-table-head').append('<th class=col-3 id ="amount-header" value="amounts">Amount</th>');
+    $('#contribution-table-head').append('<th class=col-3 id ="state-header" value="states">State</th>');
     $('#contribution-table-head').append('</tr>');
 
 
@@ -212,9 +226,9 @@ function populate_contribution_table(contributions) {
     $('#contribution-table-body').html('');
     for (const contribution of contributions) {
         $('#contribution-table-body').append(`<tr>
-                                        <td value="${contribution['committee']}" id="get-donations-${contribution['contribution_id']}">${contribution['committee']}</td>
-                                        <td value=${contribution['amount']}>${contribution['amount']}</td>
-                                        <td value=${contribution['state']}>${contribution['state']}</td>
+                                        <td class=col-6 value="${contribution['committee']}" id="get-donations-${contribution['contribution_id']}">${contribution['committee']}</td>
+                                        <td class=col-3 value=${contribution['amount']}>${contribution['amount']}</td>
+                                        <td class=col-3 value=${contribution['state']}>${contribution['state']}</td>
                                         </tr>`);
         committee_click_event_handler(contribution.committee_id, contribution.contribution_id);
     };
