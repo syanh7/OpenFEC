@@ -171,6 +171,13 @@ def get_contributions_by_committee(committee):
     return Contribution.query.join(Committee).filter((Committee.committee_id == committee.committee_id)).all()
 
 
+def get_top_100_committees():
+    return db.session.execute("""SELECT committee_id, committees.name
+                                FROM contributions JOIN committees 
+                                USING (committee_id) 
+                                GROUP BY committee_id, committees.name 
+                                ORDER BY SUM(amount) DESC LIMIT 100""").fetchall()
+
 def mass_commit():
     db.session.commit()
 

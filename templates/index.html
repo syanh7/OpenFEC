@@ -14,17 +14,16 @@
   </head>
   <body>
 
-    <section id = "select-race">
+    <section id = "select-race" class="col-md-3">
         <h3 id= "race-title">Select Election Race (2022 Cycle)</h3>
-
         <button id='president-race' value = 'president'>President</button>
         <button id='senate-race' value = 'senate'>Senate</button>
         <button id='house-race' value = 'house'>House</button>
-
+        <button id='all-committees' value = 'committee'>Committees</button>
     </section>
 
-    <section id = "select-state-senate" >
-        <h3 id = 'state-title-senate'></h3>
+    <section class="hidden" id = "select-state-senate" >
+        <h3 id = 'state-title-senate'>State:</h3>
         <form id = "get-state-senate">
             <select id = "state-id-senate">
             </select>
@@ -32,17 +31,14 @@
         </form>
     </section>
 
-    <section id = "select-state-house" >
-        <h3 id = 'state-title-house'></h3>
+    <section class="hidden" id = "select-state-house" >
+        <h3 id = 'state-title-house'>State:</h3>
         <form id = "get-state-house">
             <select id = "state-id-house">
             </select>
             <input type="submit">
         </form>
-    </section>
-
-    <section id = "select-district">
-        <h3 id = 'district-title'></h3>
+        <h3 id = 'district-title'>District:</h3>
         <form id = "get-district">
             <select id = "district-id">
             </select>
@@ -51,8 +47,14 @@
     </section>
 
 
+
     <section id = "display-candidates">
         <ul id = "candidate-list">
+        </ul>
+    </section>
+
+    <section id = "display-committees">
+        <ul id = "committee-list">
         </ul>
     </section>
 

@@ -5,6 +5,8 @@ and populate the candidate list container*/
 $('#president-race').on('click', () => {
     //reset the display state
     default_display_state();
+    $('#select-state-senate').addClass('hidden')
+    $('#select-state-house').addClass('hidden')
     //get all presidential candidates from route
     $.get('/president.json',  (res) => {
         //iterate throught the candidates and create 
@@ -19,8 +21,10 @@ $('#president-race').on('click', () => {
 /* Get all of the states that a senate race
 will be in and populate the state dropdown menu */
 $('#senate-race').on('click', () => {
-    default_display_state()
-    $('#state-id-senate').html('')
+    default_display_state();
+    $('#select-state-senate').removeClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#state-id-senate').html('');
     $.get('/senate.json',  (res) => {
         for (const state of res) {
             $('#state-id-senate').append(`<option value=${state}>${state}</option>`);
@@ -33,6 +37,8 @@ $('#senate-race').on('click', () => {
 will be in and populate the state dropdown menu */
 $('#house-race').on('click', () => {
     default_display_state();
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').removeClass('hidden');
     $('#state-id-house').html('');
     $.get('/house.json',  (res) => {
         for (const state of res) {
@@ -41,6 +47,18 @@ $('#house-race').on('click', () => {
     });
 });
 
+/* Get the top 100 committees that have donated to 
+any federal election candidate */
+$('#all-committees').on('click', () => {
+    default_display_state();
+    $('#select-state-senate').addClass('hidden')
+    $('#select-state-house').addClass('hidden')
+    $.get('/committee.json',  (res) => {
+        for (const committee of res) {
+            create_committee_and_event(committee);
+        };
+    });
+});
 
 /* Get all of the candidates for senate election
 in a state and populate the candidate list container */
@@ -103,10 +121,28 @@ function create_candidate_and_event(candidate){
     });
 };
 
+
+//creates event handlers so user can click on a committee row and get 
+//all the donations a committee has made
+function create_committee_and_event(committee) {
+    $('#committee-list').append(`<button id=committee-${committee.committee_id} value=${committee.committee_id}>${committee.name}</button>`);
+    $(`#committee-${committee.committee_id}`).on('click', () => {
+        default_display_state();
+        $.get(`/committee/${committee.committee_id}.json`,  (res) => {
+            const committee = res.committee;
+            const candidates = res.candidates;
+            populate_committee(committee, res.total);
+            initialize_donations_table()
+            populate_donations_table(candidates);
+            create_sort_event_handler_candidate(candidates);
+        });
+    });
+};
 /* Resets the display state to the default
 so that it is ready to display another candidate */
 function default_display_state() {
     $('#candidate-list').html('');
+    $('#committee-list').html('');
     $('#display-candidate').html('');
     $('#display-committee').html('');  
     $('#contributions').html('');
@@ -119,6 +155,8 @@ function default_display_state() {
 /* When a candidate is selected, their information is diplayed
 and the visualization is activated*/
 function populate_candidate(candidate, total, contributions, race) {
+    $('#select-state-senate').addClass('hidden')
+    $('#select-state-house').addClass('hidden')
     $('#display-candidate').append(`<h3><a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">${candidate.name}</a></h3>`);
     $('#display-candidate').append(`<p>State: ${candidate.state}</p>`);
     $('#display-candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
@@ -153,6 +191,8 @@ function populate_candidate(candidate, total, contributions, race) {
 //and pass the contributions array to the sort event handlers
 //and the populate contribution tables
 function initialize_contribution_table(contributions) {
+    $('#select-state-senate').addClass('hidden')
+    $('#select-state-house').addClass('hidden')
     $('#contribution-table-head').html('');
     $('#contribution-table-head').append('<tr>');
     $('#contribution-table-head').append('<th id ="committee-header" value="committees">Committee</th>');
@@ -266,7 +306,6 @@ function committee_click_event_handler(committee_id, contribution_id) {
 //populate basic information about the committee
 function populate_committee(committee, total) {
     $('#display-committee').append(`<p>${committee.name} ${committee.state} ${total}<p>`)
-
 };
 
 //initalizaes the committees donation tables
@@ -392,4 +431,3 @@ function create_sort_event_handler_candidate(candidates) {
         populate_donations_table(candidates);
     });
 };
-

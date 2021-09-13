@@ -95,6 +95,8 @@ def house_election(state, district):
                      'incumbent':candidate.incumbent} for candidate in candidates])
 
 
+
+
 @app.route('/candidate/<candidate_id>.json')
 @cache.cached()
 def candidate_info(candidate_id):
@@ -107,7 +109,7 @@ def candidate_info(candidate_id):
     total = helper.total_contributions(contributions)
 
     return jsonify({'candidate':candidate.as_dict(),
-                    'race':candidate.candidate_race[0].race.as_dict(), 
+                    'race':candidate.candidate_race[-1].race.as_dict(), 
                     'total':total,
                     'contributions':[{
                         'contribution_id': contribution.contribution_id,
@@ -119,6 +121,16 @@ def candidate_info(candidate_id):
                         'party': contribution.committee.party} for contribution in contributions]})
 
 
+@app.route('/committee.json')
+@cache.cached()
+def top_100_committees():
+    ''' Return the top 100 committees by total amount donated '''
+    committees = crud.get_top_100_committees()
+
+    committees = [{'committee_id':committee[0],
+                    'name':committee[1]} for committee in committees]
+
+    return jsonify(committees)
 
 
 @app.route('/committee/<committee_id>.json')
