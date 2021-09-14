@@ -119,7 +119,12 @@ $('#get-district').on('submit', (evt) => {
 /* Dynamically creates a candidate button to select a candidate and
 creates an event handler for that button */
 function create_candidate_and_event(candidate){
-    $('#candidate-list').append(`<button class=col-2 id=${candidate.candidate_id} value=${candidate.candidate_id}>${candidate.name}</button>`);
+    $('#candidate-list').append(`<div class="col-3 card" id=${candidate.candidate_id} value=${candidate.candidate_id}>
+                                    <div class="card-body">
+                                        <h5 class="card-title">${candidate.name}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${candidate.party}</h6>
+                                    </div>
+                                </div>`);
     $(`#${candidate.candidate_id}`).on('click', () => {
         default_display_state();
         $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
