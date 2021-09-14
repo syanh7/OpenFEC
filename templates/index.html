@@ -14,14 +14,14 @@
   </head>
   <body>
 
-    <section id = "select-race" class="container">
-        <ul class="nav nav-pills nav-stacked list-inline">
-            <h3 class = 'col-4' id= "race-title">Open FEC Visualization</h3>
-            <li class = 'col-2' id='president-race' value = 'president'>President</li>
-            <li class = 'col-2' id='senate-race' value = 'senate'>Senate</li>
-            <li class = 'col-2' id='house-race' value = 'house'>House</li>
-            <li class = 'col-2' id='all-committees' value = 'committee'>Committees</li>
-        </ul>
+    <section id = "select-race" >
+        <nav class="navbar navbar-dark bg-primary">
+            <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
+            <button type="button" class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button>
+        </nav>
     </section>
 
     <section class="container" id = "description">
@@ -45,6 +45,9 @@
             </select>
             <input type="submit">
         </form>
+    </section>
+
+    <section class="hidden container" id = "select-district-house">
         <h3 id = 'district-title'>District:</h3>
         <form id = "get-district">
             <select id = "district-id">
@@ -65,16 +68,20 @@
         </div>
     </section>
 
+
     <section class="container" id = "display-candidate">
     </section>
 
     <section class="container" id = "display-contributions">
 
+        <button type="button" class="hidden col-2" id="toggle-contributions">Table View</button>
+
         <div id="contributions">
         <title></title>
         </div>
 
-        <table id = "contribution-table">
+
+        <table class = "hidden" id = "contribution-table">
             <thead id = "contribution-table-head">
             </thead>
 
@@ -84,6 +91,8 @@
         </table>
     
     </section>
+
+
 
     <section class="container" id = "display-committee">
     </section>

@@ -1,9 +1,13 @@
 import {bubbleChart} from "./d3.js";
-
+/*    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
+    $('#description').addClass('hidden');* */
 $('#race-title').on('click', () => {
     default_display_state();
     $('#select-state-senate').addClass('hidden');
     $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
     $('#description').removeClass('hidden');
 
 });
@@ -13,9 +17,7 @@ and populate the candidate list container*/
 $('#president-race').on('click', () => {
     //reset the display state
     default_display_state();
-    $('#select-state-senate').addClass('hidden');
-    $('#select-state-house').addClass('hidden');
-    $('#description').addClass('hidden');
+    default_selection_state();
     //get all presidential candidates from route
     $.get('/president.json',  (res) => {
         //iterate throught the candidates and create 
@@ -33,6 +35,7 @@ $('#senate-race').on('click', () => {
     default_display_state();
     $('#select-state-senate').removeClass('hidden');
     $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
     $('#description').addClass('hidden');
     $('#state-id-senate').html('');
     $.get('/senate.json',  (res) => {
@@ -49,6 +52,7 @@ $('#house-race').on('click', () => {
     default_display_state();
     $('#select-state-senate').addClass('hidden');
     $('#select-state-house').removeClass('hidden');
+    $('#select-district-house').addClass('hidden');
     $('#description').addClass('hidden');
     $('#state-id-house').html('');
     $.get('/house.json',  (res) => {
@@ -62,9 +66,7 @@ $('#house-race').on('click', () => {
 any federal election candidate */
 $('#all-committees').on('click', () => {
     default_display_state();
-    $('#select-state-senate').addClass('hidden');
-    $('#select-state-house').addClass('hidden');
-    $('#description').addClass('hidden');
+    default_selection_state();
     $.get('/committee.json',  (res) => {
         for (const committee of res) {
             create_committee_and_event(committee);
@@ -90,7 +92,8 @@ $('#get-state-senate').on('submit', (evt) => {
 state and populate the district dropdown menu */
 $('#get-state-house').on('submit', (evt) => {
     evt.preventDefault();
-    default_display_state()
+    $('#select-district-house').removeClass('hidden');
+    default_display_state();
     $('#district-id').html('');
     const state = $('#state-id-house').val()
     $.get(`/house/${state}.json`,  (res) => {
@@ -105,15 +108,60 @@ $('#get-state-house').on('submit', (evt) => {
 and district and populate the candidate list container */
 $('#get-district').on('submit', (evt) => {
     evt.preventDefault();
-    default_display_state()
+    default_display_state();
     const state = $('#state-id-house').val()
     const district = $('#district-id').val()
     $.get(`/house/${state}/${district}.json`,  (res) => {
         for (const candidate of res) {
             create_candidate_and_event(candidate);
-        }
+        } 
     });
 });
+
+
+/* Toggles contributions between a table 
+view or a visualization */
+$('#toggle-contributions').on('click', () => {
+    const text = $('#toggle-contributions').text()
+
+    if (text === 'Table View') {
+        $('#contributions').addClass("hidden");
+        $('#contribution-table').removeClass("hidden");
+        $('#toggle-contributions').text('Visualization View')
+    }
+    else {
+        $('#contributions').removeClass("hidden");
+        $('#contribution-table').addClass("hidden");
+        $('#toggle-contributions').text('Table View')
+
+    }
+});
+
+/* Resets the display state to the default
+so that it is ready to display another candidate */
+function default_display_state() {
+    $('#candidate-list').html('');
+    $('#committee-list').html('');
+    $('#display-candidate').html('');
+    $('#display-committee').html('');  
+    $('#contributions').html('');
+    $('#contribution-table-head').html('');
+    $('#contribution-table-body').html('');
+    $('#donations-table-head').html('');
+    $('#donations-table-body').html('');
+    $('#toggle-contributions').text('Table View')
+    $('#toggle-contributions').addClass('hidden');
+    $('#contribution-table').addClass('hidden');
+    $('#contributions').removeClass('hidden')
+};
+
+/* Resets all of the selectors to hidden */
+function default_selection_state() {
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
+    $('#description').addClass('hidden');
+};
 
 
 /* Dynamically creates a candidate button to select a candidate and
@@ -126,6 +174,7 @@ function create_candidate_and_event(candidate){
                                     </div>
                                 </div>`);
     $(`#${candidate.candidate_id}`).on('click', () => {
+        default_selection_state();
         default_display_state();
         $.get(`/candidate/${candidate.candidate_id}.json`, (res) => {
             const candidate = res.candidate;
@@ -149,6 +198,7 @@ function create_committee_and_event(committee) {
                                         </div>
                                 </div>`);
     $(`#committee-${committee.committee_id}`).on('click', () => {
+        default_selection_state();
         default_display_state();
         $.get(`/committee/${committee.committee_id}.json`,  (res) => {
             const committee = res.committee;
@@ -160,36 +210,39 @@ function create_committee_and_event(committee) {
         });
     });
 };
-/* Resets the display state to the default
-so that it is ready to display another candidate */
-function default_display_state() {
-    $('#candidate-list').html('');
-    $('#committee-list').html('');
-    $('#display-candidate').html('');
-    $('#display-committee').html('');  
-    $('#contributions').html('');
-    $('#contribution-table-head').html('');
-    $('#contribution-table-body').html('');
-    $('#donations-table-head').html('');
-    $('#donations-table-body').html('');
-};
+
 
 /* When a candidate is selected, their information is diplayed
 and the visualization is activated*/
 function populate_candidate(candidate, total, contributions, race) {
-    $('#select-state-senate').addClass('hidden')
-    $('#select-state-house').addClass('hidden')
-    $('#description').addClass('hidden');
-    $('#display-candidate').append(`<h3><a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener">${candidate.name}</a></h3>`);
-    $('#display-candidate').append(`<p>State: ${candidate.state}</p>`);
-    $('#display-candidate').append(`<p>Incumbent/Challenger: ${candidate.incumbent}</p>`);
-    $('#display-candidate').append(`<p>Party: ${candidate.party}</p>`);
-    $('#display-candidate').append(`<p>Election Cycle: ${race.cycle}</p>`);
-    $('#display-candidate').append(`<p>District: ${race.district}</p>`);
-    $('#display-candidate').append(`<p>Office: ${race.office}</p>`);
-    $('#display-candidate').append(`<p>Total: ${total}</p>`);
+    $('#display-candidate').append(`<div class="card col-6">
+                                        <div class="card-body">
+                                            <h5 id=card-title class="card-title">${candidate.name}</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">${candidate.party}</h6>
+                                            <p id=card-text class="card-text"></p>
+                                            <p class="card-text">Amount Raised: ${total}</p>
+                                            <a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener" class="card-link">FEC Page</a>
+                                        </div>
+                                    </div>`)
 
 
+    if (race.office == "P") {
+        $('#card-text').text('Running for the President of the United States');
+    }
+
+    else if (race.office == "S") {
+        $('#card-text').text(`Running for ${candidate.state} state Senate`);
+    }
+
+    else {
+        $('#card-text').text(`Running for ${candidate.state}'s ${race.district} Congressional District`)
+    };
+
+    if (candidate.incumbent == 'I'){
+        $('#card-title').text(`${candidate.name} (incumbent)`)
+    };
+
+    $('#toggle-contributions').removeClass('hidden');
 
     var contribution = [];
     
@@ -210,12 +263,14 @@ function populate_candidate(candidate, total, contributions, race) {
 };
 
 
+
 //Initialize the contribution table with default header values
 //and pass the contributions array to the sort event handlers
 //and the populate contribution tables
 function initialize_contribution_table(contributions) {
     $('#select-state-senate').addClass('hidden');
     $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
     $('#description').addClass('hidden');
     $('#contribution-table-head').html('');
     $('#contribution-table-head').append('<tr>');
@@ -243,6 +298,7 @@ function populate_contribution_table(contributions) {
         committee_click_event_handler(contribution.committee_id, contribution.contribution_id);
     };
 };
+
 
 //creates event handlers so when the headers of the table are clicked
 //the column associated with it is toggled to be sorted
@@ -329,9 +385,6 @@ function committee_click_event_handler(committee_id, contribution_id) {
 
 //populate basic information about the committee
 function populate_committee(committee, total) {
-    $('#select-state-senate').addClass('hidden')
-    $('#select-state-house').addClass('hidden')
-    $('#description').addClass('hidden');
     $('#display-committee').append(`<h3><a href="https://www.fec.gov/data/committee/${committee.committee_id}/" target="_blank" rel="noopener">${committee.name}</a></h3>`);
     $('#display-committee').append(`<p>State: ${committee.state}</p>`);
     $('#display-candidate').append(`<p>Total: ${total}</p>`);
@@ -375,6 +428,7 @@ function candidate_on_click(candidate) {
         });
     });
 };
+
 
 
 //allows user to sort the donation table by clicking the header
