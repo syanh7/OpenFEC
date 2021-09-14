@@ -36,7 +36,9 @@ def presidential_election():
     ''' Return presidential Candidates '''
 
 
-    candidates = crud.get_candidates()
+    #candidates = crud.get_candidates()
+
+    candidates = crud.get_presidential_candidates()
     return jsonify([{'name':candidate.name, 'candidate_id':candidate.candidate_id, 'party':candidate.party} for candidate in candidates])
 
 
@@ -128,7 +130,8 @@ def top_100_committees():
     committees = crud.get_top_100_committees()
 
     committees = [{'committee_id':committee[0],
-                    'name':committee[1]} for committee in committees]
+                    'name':committee[1],
+                    'state':committee[2]} for committee in committees]
 
     return jsonify(committees)
 

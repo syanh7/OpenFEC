@@ -140,6 +140,18 @@ def get_candidate_race(candidate, cycle = 2022):
                                                                 & (Race.cycle == cycle)).first()
 
 
+def get_presidential_candidates():
+    return db.session.execute('''
+    SELECT candidate_id, candidates.name, candidates.party
+    FROM contributions FULL JOIN candidates 
+    USING (candidate_id) 
+	WHERE candidate_id in (SELECT candidate_id
+						FROM candidate_race JOIN races 									
+						USING (race_id) 
+						WHERE races.office = 'P' AND races.cycle = '2022')
+    GROUP BY candidate_id, candidates.name, candidates.party 
+    ORDER BY SUM(amount) ASC''').fetchall()
+
 #returns all candidates, default is president
 def get_candidates(state='US', office='P', district='00', cycle = 2022):
     return Candidate.query.join(CandidateRace).join(Race).filter((Race.state == state) 
@@ -172,10 +184,10 @@ def get_contributions_by_committee(committee):
 
 
 def get_top_100_committees():
-    return db.session.execute("""SELECT committee_id, committees.name
+    return db.session.execute("""SELECT committee_id, committees.name, committees.state
                                 FROM contributions JOIN committees 
                                 USING (committee_id) 
-                                GROUP BY committee_id, committees.name 
+                                GROUP BY committee_id, committees.name, committees.state 
                                 ORDER BY SUM(amount) DESC LIMIT 100""").fetchall()
 
 def mass_commit():
