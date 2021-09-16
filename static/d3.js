@@ -31,9 +31,17 @@ export function bubbleChart() {
   // force simulation starts up automatically, which we don't want as there aren't any nodes yet
   simulation.stop();
 
-  const fillColour = d3.scaleOrdinal()
+  const fillColourNone = d3.scaleOrdinal()
       .domain([1, 2, 3, 4, 5])
       .range(["#5e5ebf", "#7070c7", "#8383ce", "#9595d5", "#a7a7dc"]);
+  
+  const fillColourREP = d3.scaleOrdinal()
+      .domain([1, 2, 3, 4, 5])
+      .range(["#881013", "#b5161a", "#e21c21", "#e8494d", "#f3a4a6"]);
+
+  const fillColourDEM = d3.scaleOrdinal()
+      .domain([1, 2, 3, 4, 5])
+      .range(["#4da7ff", "#67b3ff", "#80c0ff", "#9acdff", "#b3d9ff"]);
 
   // data manipulation function takes raw data from csv and converts it into an array of node objects
   // each node will store data and visualisation values to draw a bubble
@@ -85,13 +93,36 @@ export function bubbleChart() {
       
     //create the bubbles with the attributes of
     //each committee donation  
-    bubbles = elements
+    const party = $("#candidate-party").text()
+
+    if (party == 'DEM') {
+      bubbles = elements
       .append('circle')
       .classed('bubble', true)
       .attr('r', d => d.radius)
-      .attr('fill', d => fillColour(Math.trunc(d.amount/250)))
+      .attr('fill', d => fillColourDEM(Math.trunc(d.amount/250)))
       .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
       .attr('data-toggle', 'tooltip');
+    }
+    else if (party == "REP") {
+      bubbles = elements
+      .append('circle')
+      .classed('bubble', true)
+      .attr('r', d => d.radius)
+      .attr('fill', d => fillColourREP(Math.trunc(d.amount/250)))
+      .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
+      .attr('data-toggle', 'tooltip');
+    }
+    else {
+      bubbles = elements
+      .append('circle')
+      .classed('bubble', true)
+      .attr('r', d => d.radius)
+      .attr('fill', d => fillColourNone(Math.trunc(d.amount/250)))
+      .attr('data-original-title', d => 'Committee: ' + d.committee + '\nAmount: ' + d.amount )
+      .attr('data-toggle', 'tooltip');
+    }
+
 
 
     // set simulation's nodes to our newly created nodes array

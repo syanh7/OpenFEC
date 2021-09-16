@@ -220,7 +220,7 @@ function populate_candidate(candidate, total, contributions, race) {
                                             <h5 id=card-header>${candidate.name}</h5>
                                         </div>
                                         <div class="card-body">
-                                            <h6 class="card-subtitle mb-2 text-muted">${candidate.party}</h6>
+                                            <h6 class="card-subtitle mb-2 text-muted" id="candidate-party" value="${candidate.party}">${candidate.party}</h6>
                                             <p id=card-text class="card-text"></p>
                                             <p class="card-text">Amount Raised: ${total}</p>
                                             <a href="https://www.fec.gov/data/candidate/${candidate.candidate_id}/" target="_blank" rel="noopener" class="card-link">FEC Page</a>
@@ -248,7 +248,7 @@ function populate_candidate(candidate, total, contributions, race) {
 
     var contribution = [];
     
-    for (const ele of contributions) {
+    for (const ele of contributions) { 
         contribution.push({"committee":ele['committee'], "committee_id":ele['committee_id'], "amount":ele['amount']});
     };
 
