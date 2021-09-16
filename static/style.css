@@ -3,7 +3,7 @@
 }
 
 button {
-  background-color: #4DA6FF;
+  background-color: #7cb1e4;
   border: none;
   color: black;
   padding: 15px 32px;
@@ -76,8 +76,16 @@ tr:nth-child(even) {
   background-color: #d2f8d2;
 }
 
+.card.committee {
+  background-color: #c9c9e9;
+}
+
+.card-header.committee {
+  background-color: #c9c9e9;
+}
+
 input {
-  background-color: #4DA6FF;
+  background-color: #7cb1e4;
   border: none;
   color: black;
   padding: 10px 15px;
@@ -102,7 +110,7 @@ a {
 }
 
 .navbar {
-  background-color:#4DA6FF;
+  background-color:#7cb1e4;
 }
 
 .custom-select {

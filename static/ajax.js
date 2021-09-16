@@ -191,7 +191,7 @@ function create_candidate_and_event(candidate){
 //creates event handlers so user can click on a committee row and get 
 //all the donations a committee has made
 function create_committee_and_event(committee) {
-    $('#committee-list').append(`<div class="col-md-3 mb-6 card " id=committee-${committee.committee_id} value=${committee.committee_id}>
+    $('#committee-list').append(`<div class="col-md-3 mb-6 card committee" id=committee-${committee.committee_id} value=${committee.committee_id}>
                                     <div class="card-body">
                                         <h5 class="card-title">${committee.name}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">${committee.state}</h6>
@@ -216,7 +216,7 @@ function create_committee_and_event(committee) {
 and the visualization is activated*/
 function populate_candidate(candidate, total, contributions, race) {
     $('#display-candidate').append(`<div class="card">
-                                        <div class = "card-header ${candidate.party}">
+                                        <div class="card-header ${candidate.party}">
                                             <h5 id=card-header>${candidate.name}</h5>
                                         </div>
                                         <div class="card-body">
@@ -387,8 +387,8 @@ function committee_click_event_handler(committee_id, contribution_id) {
 
 //populate basic information about the committee
 function populate_committee(committee, total) {
-    $('#display-committee').append(`<div class="card col-6 offset-3">
-                                        <div class = "card-header">
+    $('#display-committee').append(`<div class="card">
+                                        <div class="card-header committee">
                                             <h5 id=card-header>${committee.name}</h5>
                                         </div>
                                         <div class="card-body">
