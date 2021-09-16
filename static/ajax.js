@@ -167,7 +167,7 @@ function default_selection_state() {
 /* Dynamically creates a candidate button to select a candidate and
 creates an event handler for that button */
 function create_candidate_and_event(candidate){
-    $('#candidate-list').append(`<div class="col-md-3 mb-6 card" id=${candidate.candidate_id} value=${candidate.candidate_id}>
+    $('#candidate-list').append(`<div class="col-md-3 mb-6 card list ${candidate.party}" id=${candidate.candidate_id} value=${candidate.candidate_id}>
                                     <div class="card-body">
                                         <h5 class="card-title">${candidate.name}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">${candidate.party}</h6>
@@ -191,7 +191,7 @@ function create_candidate_and_event(candidate){
 //creates event handlers so user can click on a committee row and get 
 //all the donations a committee has made
 function create_committee_and_event(committee) {
-    $('#committee-list').append(`<div class="col-md-3 mb-6 card" id=committee-${committee.committee_id} value=${committee.committee_id}>
+    $('#committee-list').append(`<div class="col-md-3 mb-6 card " id=committee-${committee.committee_id} value=${committee.committee_id}>
                                     <div class="card-body">
                                         <h5 class="card-title">${committee.name}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">${committee.state}</h6>
@@ -215,9 +215,11 @@ function create_committee_and_event(committee) {
 /* When a candidate is selected, their information is diplayed
 and the visualization is activated*/
 function populate_candidate(candidate, total, contributions, race) {
-    $('#display-candidate').append(`<div class="card col-6">
+    $('#display-candidate').append(`<div class="card">
+                                        <div class = "card-header ${candidate.party}">
+                                            <h5 id=card-header>${candidate.name}</h5>
+                                        </div>
                                         <div class="card-body">
-                                            <h5 id=card-title class="card-title">${candidate.name}</h5>
                                             <h6 class="card-subtitle mb-2 text-muted">${candidate.party}</h6>
                                             <p id=card-text class="card-text"></p>
                                             <p class="card-text">Amount Raised: ${total}</p>
@@ -231,15 +233,15 @@ function populate_candidate(candidate, total, contributions, race) {
     }
 
     else if (race.office == "S") {
-        $('#card-text').text(`Running for ${candidate.state} state Senate`);
+        $('#card-text').text(`Running for US Senator for ${candidate.state}`);
     }
 
     else {
-        $('#card-text').text(`Running for ${candidate.state}'s ${race.district} Congressional District`)
+        $('#card-text').text(`Running for US Representative for ${candidate.state}'s ${race.district} District`)
     };
 
     if (candidate.incumbent == 'I'){
-        $('#card-title').text(`${candidate.name} (incumbent)`)
+        $('#card-header').text(`${candidate.name} (incumbent)`)
     };
 
     $('#toggle-contributions').removeClass('hidden');
@@ -274,9 +276,9 @@ function initialize_contribution_table(contributions) {
     $('#description').addClass('hidden');
     $('#contribution-table-head').html('');
     $('#contribution-table-head').append('<tr>');
-    $('#contribution-table-head').append('<th class=col-6 id ="committee-header" value="committees">▲▼ Committee</th>');
-    $('#contribution-table-head').append('<th class=col-3 id ="amount-header" value="amounts">▲▼ Amount</th>');
-    $('#contribution-table-head').append('<th class=col-3 id ="state-header" value="states">▲▼ State</th>');
+    $('#contribution-table-head').append('<th class=col-6 id ="committee-header" value="committees">Committee ▲▼</th>');
+    $('#contribution-table-head').append('<th class=col-3 id ="amount-header" value="amounts">Amount ▲▼</th>');
+    $('#contribution-table-head').append('<th class=col-3 id ="state-header" value="states">State ▲▼</th>');
     $('#contribution-table-head').append('</tr>');
 
 
@@ -291,7 +293,7 @@ function populate_contribution_table(contributions) {
     $('#contribution-table-body').html('');
     for (const contribution of contributions) {
         $('#contribution-table-body').append(`<tr>
-                                        <td class=col-6 value="${contribution['committee']}" id="get-donations-${contribution['contribution_id']}">${contribution['committee']}</td>
+                                        <td class="col-6 table-data" value="${contribution['committee']}" id="get-donations-${contribution['contribution_id']}">${contribution['committee']}</td>
                                         <td class=col-3 value=${contribution['amount']}>${contribution['amount']}</td>
                                         <td class=col-3 value=${contribution['state']}>${contribution['state']}</td>
                                         </tr>`);
@@ -385,18 +387,26 @@ function committee_click_event_handler(committee_id, contribution_id) {
 
 //populate basic information about the committee
 function populate_committee(committee, total) {
-    $('#display-committee').append(`<h3><a href="https://www.fec.gov/data/committee/${committee.committee_id}/" target="_blank" rel="noopener">${committee.name}</a></h3>`);
-    $('#display-committee').append(`<p>State: ${committee.state}</p>`);
-    $('#display-candidate').append(`<p>Total: ${total}</p>`);
+    $('#display-committee').append(`<div class="card col-6 offset-3">
+                                        <div class = "card-header">
+                                            <h5 id=card-header>${committee.name}</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <h6 class="card-subtitle mb-2 text-muted">${committee.state}</h6>
+                                            <p class="card-text">Amount Raised: ${total}</p>
+                                            <a href="https://www.fec.gov/data/committee/${committee.committee_id}/" target="_blank" rel="noopener" class="card-link">FEC Page</a>
+                                        </div>
+                                    </div>`)
+
 };
 
 //initalizaes the committees donation tables
 function initialize_donations_table() {
     $('#donations-table-head').append('<tr>');
-    $('#donations-table-head').append('<th class="col-4" id ="candidate-header" value="candidate">▲▼ Candidate</th>');
-    $('#donations-table-head').append('<th class="col-2" id ="amount-header" value="amounts">▲▼ Amount</th>');
-    $('#donations-table-head').append('<th class="col-2" id ="state-header" value="states">▲▼ State</th>');
-    $('#donations-table-head').append('<th class="col-2" id ="party-header" value="party">▲▼ Party</th>');
+    $('#donations-table-head').append('<th class="col-4" id ="candidate-header" value="candidate">Candidate ▲▼</th>');
+    $('#donations-table-head').append('<th class="col-2" id ="amount-header" value="amounts">Amount ▲▼</th>');
+    $('#donations-table-head').append('<th class="col-2" id ="state-header" value="states">State ▲▼</th>');
+    $('#donations-table-head').append('<th class="col-2" id ="party-header" value="party">Party ▲▼</th>');
     $('#donations-table-head').append('</tr>');
 
 };
@@ -406,7 +416,7 @@ function populate_donations_table(candidates) {
     $('#donations-table-body').html('');
     for (const candidate of candidates) {
         $('#donations-table-body').append(`<tr>
-                                        <td class="col-4" id =${candidate.contribution_id} value=${candidate['candidate_id']}><a>${candidate['name']}</a></td>
+                                        <td class="col-4 table-data" id =${candidate.contribution_id} value=${candidate['candidate_id']}>${candidate['name']}</td>
                                         <td class="col-2" value=${candidate['amount']}>${candidate['amount']}</td>
                                         <td class="col-2" value=${candidate['state']}>${candidate['state']}</td>
                                         <td class="col-2"value=${candidate['party']}>${candidate['party']}</td>

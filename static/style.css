@@ -1,5 +1,140 @@
 .hidden {
-    display: none;
-  };
+  display: none;
+}
+
+button {
+  background-color: #4DA6FF;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #B3D9FF;
+}
+
+.card-header {
+  background-color: lightgrey;
+}
+
+.card-header.DEM {
+  background-color: #B3D9FF;
+}
+
+.card-header.REP {
+  background-color: #f3a4a6;
+}
+
+.card-header.IND {
+  background-color: lavender;
+}
+
+.card-header.LIB {
+  background-color: lemonchiffon;
+}
+
+.card-header.GRE {
+  background-color: #d2f8d2;
+}
+
+.card.list {
+  background-color: lightgray;
+}
+
+.card.DEM {
+  background-color: #B3D9FF;
+}
+
+.card.REP {
+  background-color: #f3a4a6;
+}
+
+.card.IND {
+  background-color: lavender;
+}
+
+.card.LIB {
+  background-color: lemonchiffon;
+}
+
+.card.GRE {
+  background-color: #d2f8d2;
+}
+
+input {
+  background-color: #4DA6FF;
+  border: none;
+  color: black;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+a {
+  color: #0073e6;
+}
+
+.table-data {
+  color: #0073e6;
+}
+
+.table-data:hover {
+  color: #005ab3;
+  text-decoration: underline;
+  text-decoration-color: #005ab3;  
+}
+
+.navbar {
+  background-color:#4DA6FF;
+}
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element: */
+}
 
 
+/* Hide the items when the select box s closed: */
+.select-hide {
+  display: none;
+}
+
+.navbar {
+  margin-bottom:50px;
+
+}
+
+.custom-select {
+    margin-top:25px;
+    margin-bottom:25px;
+}
+
+.card {
+    margin:5px 0px 5px 0px;
+}
+
+.container {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
