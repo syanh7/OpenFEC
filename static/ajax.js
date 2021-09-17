@@ -74,6 +74,8 @@ $('#all-committees').on('click', () => {
     });
 });
 
+
+
 /* Get all of the candidates for senate election
 in a state and populate the candidate list container */
 $('#get-state-senate').on('submit', (evt) => {

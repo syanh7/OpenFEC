@@ -18,30 +18,26 @@
   </head>
   <body>
 
-    <section id = "select-race-desktop" >
-        <nav class="navbar navbar-dark hidden-sm hidden-xs">
-            <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
-            <button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button>
-            <button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button>
-            <button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button>
-            <button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button>
-        </nav>
-    </section>
 
     <section id = "select-race-mobile" >
-        <nav class="collapse navbar-collapse visible-sm visible-xs">
-            <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button></li>
-                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button></li>
-                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button></li>
-                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button></li>
-            </ul>
+        <nav class="navbar navbar-dark d-sm-lg-xl-xxl-none">
+            <h3 class = 'navbar-brand col-3' id= "race-title-m">Open FEC Visualization</h3>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button></li>
+                    <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button></li>
+                    <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button></li>
+                    <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button></li>
+                </ul>
+            </div>
         </nav>
     </section>
 
     <section class="container" id = "description">
-        <h3 class="col-4"> Open FEC Data Vis</h3>
+        <h3 class="col-6"> Open FEC Data Vis</h3>
         <p>To get started, click the office you want to get more information about. For senate 
         and house you can select the state you'd like to view, and for house you can select the
         congressional district.</p>
@@ -97,7 +93,7 @@
 
     <section class="container" id = "display-contributions">
 
-        <button type="button" class="hidden col-2 offset-5" id="toggle-contributions">Table View</button>
+        <button type="button" class="hidden col-4 offset-3" id="toggle-contributions">Table View</button>
     
         <div class="col-8 " id="contributions">
         <title></title>
