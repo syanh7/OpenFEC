@@ -18,8 +18,8 @@
   </head>
   <body>
 
-    <section id = "select-race" >
-        <nav class="navbar navbar-dark">
+    <section id = "select-race-desktop" >
+        <nav class="navbar navbar-dark hidden-sm hidden-xs">
             <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
             <button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button>
             <button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button>
@@ -28,9 +28,28 @@
         </nav>
     </section>
 
+    <section id = "select-race-mobile" >
+        <nav class="collapse navbar-collapse visible-sm visible-xs">
+            <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button></li>
+                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button></li>
+                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button></li>
+                <li class="nav-item"><button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button></li>
+            </ul>
+        </nav>
+    </section>
+
     <section class="container" id = "description">
-        <h3 class="col-12">HI SANDRA</h3>
-        <p>and alex</p>
+        <h3 class="col-4"> Open FEC Data Vis</h3>
+        <p>To get started, click the office you want to get more information about. For senate 
+        and house you can select the state you'd like to view, and for house you can select the
+        congressional district.</p>
+        
+        <p>One you are on a candidate page you can navigate to any committee page that have donated to
+        that candidate.</p>
+        
+        <p>If you have any questions/comments/concerns or just want to reach out my email is sierrahughey@mailbox.org</p>
     </section>
 
     <section class="hidden container" id = "select-state-senate" >
@@ -80,7 +99,7 @@
 
         <button type="button" class="hidden col-2 offset-5" id="toggle-contributions">Table View</button>
     
-        <div class="col-8" id="contributions">
+        <div class="col-8 " id="contributions">
         <title></title>
         </div>
 
