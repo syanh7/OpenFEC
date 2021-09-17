@@ -1,8 +1,5 @@
 import {bubbleChart} from "./d3.js";
-/*    $('#select-state-senate').addClass('hidden');
-    $('#select-state-house').addClass('hidden');
-    $('#select-district-house').addClass('hidden');
-    $('#description').addClass('hidden');* */
+
 $('#race-title').on('click', () => {
     default_display_state();
     $('#select-state-senate').addClass('hidden');
