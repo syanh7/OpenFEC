@@ -1,6 +1,6 @@
 
 [Unit]
-Description=My Awesome Cat App
+Description=Open FEC
 After=network.target
 
 [Service]
