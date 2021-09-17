@@ -155,8 +155,10 @@ function default_display_state() {
     $('#toggle-contributions').addClass('hidden');
     $('#contribution-table').addClass('hidden');
     $('#contributions').removeClass('hidden')
-    $('navbarSupportedContent').removeClass('show');
-    $('navbarSupportedContent').removeClass('collapse')
+    $('#navbarSupportedContent').removeClass('show');
+    $('#navbarSupportedContent').addClass('collapsing');
+    $('#navbarSupportedContent').removeClass('collapsing');
+    $('#navbarSupportedContent').addClass('collapse');
 };
 
 /* Resets all of the selectors to hidden */
