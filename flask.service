@@ -8,7 +8,7 @@ Group=ubuntu
 Environment="LANG=en_US.UTF-8"
 Environment="LANGUAGE=en_US.UTF-8:"
 WorkingDirectory=/home/ubuntu/OpenFEC/
-ExecStart=/bin/bash -c "python3 server.py &>> flask.log"
+ExecStart="python3 server.py &>> flask.log"
 Restart=always
 
 [Install]
