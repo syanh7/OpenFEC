@@ -9,6 +9,8 @@ This code is for a full stack web application from seeding a database to display
 The purpose of this project is to allow users to easily find candidates of federal elections and look through their campaign contributions to see where their money is coming from.
 
 The data comes from the FEC website, through their <a href="https://api.open.fec.gov/developers/" target="_blank" rel="noopener">API <a/>and from their <a href="https://www.fec.gov/data/browse-data/?tab=bulk-data" target="_blank" rel="noopener">bulk download files </a>that are available on their site.
+
+
 A live version of this code is here at www.sierrahughey.com
 
 ## Tech Stack
