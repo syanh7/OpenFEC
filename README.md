@@ -23,7 +23,9 @@ __API's__: OpenFEC<br>
 
 Navigate to federal election candidate through office they're running for.
 
-![navigate to candidate](/img/navigate-to-candidate.gif?style="max-width:50%")
+![navigate to candidate](/img/navigate-to-candidate.gif)
+
+<img width="33%" src="/img/navigate-to-candidate.gif">
 
 From there a visualization pops up of a candidates committee contributions. A JS tooltip is implemented to interact with the visualization over hover. 
 
