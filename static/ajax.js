@@ -220,7 +220,7 @@ function default_display_state() {
     $('#toggle-contributions').text('Table View')
     $('#toggle-contributions').addClass('hidden');
     $('#contribution-table').addClass('hidden');
-    $('#contributions').removeClass('d-none');
+    $('#contributions').addClass('d-none');
     $('#navbarSupportedContent').removeClass('show');
     $('#navbarSupportedContent').addClass('collapsing');
     $('#navbarSupportedContent').removeClass('collapsing');
