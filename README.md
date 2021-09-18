@@ -23,16 +23,16 @@ __API's__: OpenFEC<br>
 
 Navigate to federal election candidate through office they're running for.
 
-![navigate to candidate] <img width="33%" src="/img/navigate-to-candidate.gif">
+<img width="33%" src="/img/navigate-to-candidate.gif">
 
 From there a visualization pops up of a candidates committee contributions. A JS tooltip is implemented to interact with the visualization over hover. 
 
-![visualization popup]<img width="33%" src="/img/vis-popup.gif">
+<img width="33%" src="/img/vis-popup.gif">
 
 An option to toggle between visualization view and table view is implemented. 
 
-![toggle view]<img width="33%" src="/img/toggle-view.gif">
+<img width="33%" src="/img/toggle-view.gif">
 
 The table view is fully sortable by column, and committees are clickable, allowing for navigation to the committee page and vice versa
 
-![sort]<img width="33%" src="/img/sort.gif">
+<img width="33%" src="/img/sort.gif">
