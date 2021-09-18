@@ -193,12 +193,12 @@ $('#toggle-contributions').on('click', () => {
     const text = $('#toggle-contributions').text()
 
     if (text === 'Table View') {
-        $('#contributions').addClass("hidden");
+        $('#contributions').addClass("d-none");
         $('#contribution-table').removeClass("hidden");
         $('#toggle-contributions').text('Visualization View')
     }
     else {
-        $('#contributions').removeClass("hidden");
+        $('#contributions').removeClass("d-none");
         $('#contribution-table').addClass("hidden");
         $('#toggle-contributions').text('Table View')
 
