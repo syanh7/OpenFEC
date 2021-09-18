@@ -1,6 +1,6 @@
 export function bubbleChart() {
-  var width = 940;
-  var height = 700;
+  var width = 300;
+  var height = 300;
 
 
   // location to centre the bubbles
@@ -51,11 +51,12 @@ export function bubbleChart() {
     // use max size in the data as the max in the scale's domain
     // note we have to ensure that size is a number
     const maxSize = d3.max(rawData, d => +d.amount);
+    console.log(maxSize);
 
     // size bubbles based on area
     const radiusScale = d3.scaleSqrt()
       .domain([0, maxSize])
-      .range([0, 40])
+      .range([0, 15])
 
     // use map() to convert raw data into node data
     const myNodes = rawData.map(d => ({
@@ -78,10 +79,9 @@ export function bubbleChart() {
     // create svg element inside provided selector
     svg = d3.select(selector)
       .append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .attr('viewbox', '940 200 940 700')
-      .attr('xmlns', "http://www.w3.org/2000/svg")
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 300 300")
+      .classed("svg-content", true);
       
 
     // bind nodes data to circle elements
