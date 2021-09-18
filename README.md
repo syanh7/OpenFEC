@@ -25,7 +25,7 @@ Navigate to federal election candidate through office they're running for.
 
 <img width="33%" src="/img/navigate-to-candidate.gif">
 
-From there a visualization pops up of a candidates committee contributions. A JS tooltip is implemented to interact with the visualization over hover. 
+From there, a visualization pops up of a candidates' committee contributions. A JS tooltip is implemented to interact with the visualization over hover. 
 
 <img width="33%" src="/img/vis-popup.gif">
 
@@ -33,6 +33,6 @@ An option to toggle between visualization view and table view is implemented.
 
 <img width="33%" src="/img/toggle-view.gif">
 
-The table view is fully sortable by column, and committees are clickable, allowing for navigation to the committee page and vice versa
+The table view is fully sortable by column, and committees are clickable, allowing for navigation to the committee page and vice versa.
 
 <img width="33%" src="/img/sort.gif">
