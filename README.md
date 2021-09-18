@@ -15,9 +15,9 @@ A live version of this code is here at www.sierrahughey.com
 
 ## Tech Stack
 
-__Front End:__ HTML5, CSS, JavaScript, AJAX, Bootstrap, D3.js
-__Back End:__ Python, Flask, PostgreSQL, SQLAlchemy
-__API's__: OpenFEC
+__Front End:__ HTML5, CSS, JavaScript, AJAX, Bootstrap, D3.js<br>
+__Back End:__ Python, Flask, PostgreSQL, SQLAlchemy<br>
+__API's__: OpenFEC<br>
 
 ## Features
 
