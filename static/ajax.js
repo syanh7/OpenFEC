@@ -220,7 +220,7 @@ function default_display_state() {
     $('#toggle-contributions').text('Table View')
     $('#toggle-contributions').addClass('hidden');
     $('#contribution-table').addClass('hidden');
-    $('#contributions').removeClass('hidden')
+    $('#contributions').removeClass('d-none');
     $('#navbarSupportedContent').removeClass('show');
     $('#navbarSupportedContent').addClass('collapsing');
     $('#navbarSupportedContent').removeClass('collapsing');
@@ -328,7 +328,7 @@ function populate_candidate(candidate, total, contributions, race) {
 
     // function called once promise is resolved and data is loaded from arr of dicts
     // calls bubble chart function to display inside #vis div
-
+    $('#contributions').removeClass('d-none');
     myBubbleChart('#contributions', contribution);
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
