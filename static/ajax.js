@@ -71,7 +71,76 @@ $('#all-committees').on('click', () => {
     });
 });
 
+$('#race-title-m').on('click', () => {
+    default_display_state();
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
+    $('#description').removeClass('hidden');
 
+});
+
+/* Get all of the candidates for president
+and populate the candidate list container*/
+$('#president-race-m').on('click', () => {
+    //reset the display state
+    default_display_state();
+    default_selection_state();
+    //get all presidential candidates from route
+    $.get('/president.json',  (res) => {
+        //iterate throught the candidates and create 
+        //buttons and event handlers for each one
+        for (const candidate of res) {
+            create_candidate_and_event(candidate);
+        }
+    });
+});
+
+
+/* Get all of the states that a senate race
+will be in and populate the state dropdown menu */
+$('#senate-race-m').on('click', () => {
+    default_display_state();
+    $('#select-state-senate').removeClass('hidden');
+    $('#select-state-house').addClass('hidden');
+    $('#select-district-house').addClass('hidden');
+    $('#description').addClass('hidden');
+    $('#state-id-senate').html('');
+    $.get('/senate.json',  (res) => {
+        for (const state of res) {
+            $('#state-id-senate').append(`<option value=${state}>${state}</option>`);
+        };
+    });
+});
+
+
+/* Get all of the states that a house race
+will be in and populate the state dropdown menu */
+$('#house-race-m').on('click', () => {
+    default_display_state();
+    $('#select-state-senate').addClass('hidden');
+    $('#select-state-house').removeClass('hidden');
+    $('#select-district-house').addClass('hidden');
+    $('#description').addClass('hidden');
+    $('#state-id-house').html('');
+    $.get('/house.json',  (res) => {
+        for (const state of res) {
+            $('#state-id-house').append(`<option value=${state}>${state}</option>`);
+        };
+    });
+});
+
+/* Get the top 100 committees that have donated to 
+any federal election candidate */
+$('#all-committees-m').on('click', () => {
+    default_display_state();
+    default_selection_state();
+    $.get('/committee.json',  (res) => {
+        for (const committee of res) {
+            create_committee_and_event(committee);
+        };
+    });
+});
 
 /* Get all of the candidates for senate election
 in a state and populate the candidate list container */

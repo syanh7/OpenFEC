@@ -15,20 +15,30 @@
   <body>
 
 
-    <section id = "select-race" >
+    <section class = "d-block d-sm-none" id = "select-race-m" >
         <nav class="navbar navbar-dark">
             <h3 class = 'navbar-brand col-3' id= "race-title">Open FEC Visualization</h3>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span>Menu</span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='president-race' value = 'president'>President</button></li>
-                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='senate-race' value = 'senate'>Senate</button></li>
-                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='house-race' value = 'house'>House</button></li>
-                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='all-committees' value = 'committee'>Committees</button></li>
+                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='president-race-m' value = 'president'>President</button></li>
+                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='senate-race-m' value = 'senate'>Senate</button></li>
+                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='house-race-m' value = 'house'>House</button></li>
+                    <li class="nav-item"><button class ='navbar-brand btn btn-outline' id='all-committees-m' value = 'committee'>Committees</button></li>
                 </ul>
             </div>
+        </nav>
+    </section>
+
+    <section class=" d-none d-sm-block" id = "select-race" >
+        <nav class="navbar navbar-dark">
+            <h3 class = 'col-3' id= "race-title">Open FEC Visualization</h3>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='president-race' value = 'president'>President</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='senate-race' value = 'senate'>Senate</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='house-race' value = 'house'>House</button>
+            <button class = 'navbar-brand col-2 btn btn-outline' id='all-committees' value = 'committee'>Committees</button>
         </nav>
     </section>
 
