@@ -1,6 +1,6 @@
 export function bubbleChart() {
-  var width = 200;
-  var height = 150;
+  var width = 300;
+  var height = 300;
 
 
   // location to centre the bubbles
