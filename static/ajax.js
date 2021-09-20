@@ -146,7 +146,7 @@ $('#all-committees-m').on('click', () => {
 
 /* Get all of the candidates for senate election
 in a state and populate the candidate list container */
-$('#get-state-senate').change((evt) => {
+$('#get-state-senate').on('submit', (evt) => {
     evt.preventDefault();
     default_display_state();
     const state = $('#state-id-senate').val()
@@ -160,7 +160,7 @@ $('#get-state-senate').change((evt) => {
 
 /* Get all of the districts that a house race will be in a 
 state and populate the district dropdown menu */
-$('#get-state-house').change((evt) => {
+$('#get-state-house').on('submit', (evt) => {
     evt.preventDefault();
     default_display_state();
     $('#select-district-house').removeClass('hidden');
@@ -177,7 +177,7 @@ $('#get-state-house').change((evt) => {
 
 /* Get all of the candidates for house election in a state 
 and district and populate the candidate list container */
-$('#get-district').change((evt) => {
+$('#get-district').on('submit',(evt) => {
     evt.preventDefault();
     default_display_state();
     const state = $('#state-id-house').val()
