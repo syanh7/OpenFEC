@@ -107,7 +107,6 @@ $('#senate-race-m').on('click', () => {
     $('#description').addClass('hidden');
     $('#state-id-senate').html('');
     $.get('/senate.json',  (res) => {
-        $('#state-id-senate').append(`<option value=None>Select A State</option>`);
         for (const state of res) {
             $('#state-id-senate').append(`<option value=${state}>${state}</option>`);
         };
@@ -125,7 +124,6 @@ $('#house-race-m').on('click', () => {
     $('#description').addClass('hidden');
     $('#state-id-house').html('');
     $.get('/house.json',  (res) => {
-        $('#state-id-house').append(`<option value=None>Select A State</option>`);
         for (const state of res) {
             $('#state-id-house').append(`<option value=${state}>${state}</option>`);
         };
@@ -167,7 +165,6 @@ $('#get-state-house').on('submit', (evt) => {
     $('#district-id').html('');
     const state = $('#state-id-house').val()
     $.get(`/house/${state}.json`,  (res) => {
-        $('#district-id').append(`<option value=None>Select A District</option>`);
         for (const district of res) {
             $('#district-id').append(`<option value=${district}>${district}</option>`);
         }
